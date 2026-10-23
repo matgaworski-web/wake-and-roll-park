@@ -1,0 +1,313 @@
+---
+import { siteConfig } from '../content/site';
+
+const instagramPosts = [
+  {
+    image: "/images/park/2P0A5011.jpg",
+    caption: "Idealne warunki na Stawach Stefańskiego! Woda jak stół, sesje od rana do zachodu słońca. 🔥🏄‍♂️",
+    likes: "248",
+    comments: "19",
+    tag: "#wakeandrollpark",
+    link: siteConfig.socials.instagram
+  },
+  {
+    image: "/images/park/2P0A5027.jpg",
+    caption: "Loty z Kickera L od Wakepro! Kto w ten weekend trenuje rotacje na torze 2.0? 🚀",
+    likes: "312",
+    comments: "27",
+    tag: "#sesitec20",
+    link: siteConfig.socials.instagram
+  },
+  {
+    image: "/images/park/2P0A5175.jpg",
+    caption: "Półkolonie WakeWakacje w pełni! Uśmiechy, pierwsze stanięcia na desce i wielka zajawka młodych riderów. 🤙",
+    likes: "189",
+    comments: "14",
+    tag: "#wakewakacje",
+    link: siteConfig.socials.instagram
+  },
+  {
+    image: "/images/park/2P0A4949.jpg",
+    caption: "Beach Bar & Chillout Zone nad wodą. Zimne napoje, leżaki i najlepszy letni klimat w Łodzi. 🌴🍹",
+    likes: "420",
+    comments: "35",
+    tag: "#lodzlatem",
+    link: siteConfig.socials.instagram
+  },
+  {
+    image: "/images/park/2P0A5381.jpg",
+    caption: "SUP safari po Stawach Stefańskiego. Deski dostępne codziennie bez zapisów. Złap swój relaks! 🧘‍♀️☀️",
+    likes: "175",
+    comments: "11",
+    tag: "#suplodz",
+    link: siteConfig.socials.instagram
+  },
+  {
+    image: "/images/park/2P0A5050.jpg",
+    caption: "Wieczorne pływanie w świetle zachodzącego słońca. Nie ma lepszego sposobu na zakończenie dnia w mieście. 🌅",
+    likes: "384",
+    comments: "42",
+    tag: "#sunsetwake",
+    link: siteConfig.socials.instagram
+  }
+];
+---
+
+<section class="social-feed-section" id="social-feed">
+  <div class="container">
+    <div class="social-header">
+      <div class="social-badge">
+        <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        <span>@wakeandrollpark na Instagramie</span>
+      </div>
+      <h2 class="social-title">Żyjemy Wodą i Pasją Każdego Dnia</h2>
+      <p class="social-desc">
+        Oznaczaj nas w relacjach <strong>@wakeandrollpark</strong> i dodawaj hashtag <strong>#wakeandrollpark</strong>, 
+        aby trafić na naszą ścianę i zgarnąć wejściówki na tor!
+      </p>
+    </div>
+
+    <div class="social-grid">
+      {instagramPosts.map(post => (
+        <a 
+          href={post.link} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="social-card"
+          aria-label={`Zobacz post na Instagramie: ${post.tag}`}
+        >
+          <div class="card-media">
+            <img 
+              src={post.image} 
+              alt={post.caption} 
+              loading="lazy" 
+              class="card-img" 
+              width="400" 
+              height="400" 
+            />
+            <div class="card-overlay">
+              <div class="overlay-stats">
+                <span><i class="fa-solid fa-heart" aria-hidden="true"></i> {post.likes}</span>
+                <span><i class="fa-solid fa-comment" aria-hidden="true"></i> {post.comments}</span>
+              </div>
+              <span class="overlay-tag">{post.tag}</span>
+            </div>
+            <span class="insta-corner-icon" aria-hidden="true">
+              <i class="fa-brands fa-instagram"></i>
+            </span>
+          </div>
+          <div class="card-caption">
+            <p>{post.caption}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="social-actions">
+      <a 
+        href={siteConfig.socials.instagram} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="btn btn-primary"
+      >
+        <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        <span>Obserwuj @wakeandrollpark</span>
+      </a>
+      <a 
+        href={siteConfig.socials.facebook} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="btn btn-outline"
+      >
+        <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        <span>Polub nas na Facebooku</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .social-feed-section {
+    padding: 80px 0;
+    background: #080d1a;
+    position: relative;
+  }
+
+  .social-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 48px auto;
+  }
+
+  .social-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(225, 48, 108, 0.15);
+    border: 1px solid rgba(225, 48, 108, 0.4);
+    color: #ff5d8f;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .social-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .social-desc {
+    color: var(--color-text-muted);
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+
+  .social-desc strong {
+    color: #fff;
+  }
+
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 900px) {
+    .social-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .social-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .social-card {
+    background: rgba(16, 24, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .social-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 229, 255, 0.4);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-media {
+    position: relative;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .social-card:hover .card-img {
+    transform: scale(1.05);
+  }
+
+  .insta-corner-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    z-index: 2;
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 10, 18, 0.75);
+    backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: 1;
+  }
+
+  .social-card:hover .card-overlay {
+    opacity: 1;
+  }
+
+  .overlay-stats {
+    display: flex;
+    gap: 20px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .overlay-stats span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .overlay-stats i {
+    color: #ff5d8f;
+  }
+
+  .overlay-tag {
+    color: var(--color-accent-blue);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .card-caption {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .card-caption p {
+    font-size: 0.88rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .social-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+</style>

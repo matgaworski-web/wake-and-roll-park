@@ -1,18 +1,34 @@
 ---
 import { siteConfig } from '../content/site';
+
+const turns = [
+  { nr: 1, dates: "29.06 – 03.07", status: "Zapisy otwarte", badge: "Turnus 1" },
+  { nr: 2, dates: "06.07 – 10.07", status: "Zapisy otwarte", badge: "Turnus 2" },
+  { nr: 3, dates: "13.07 – 17.07", status: "Popularny", badge: "Turnus 3" },
+  { nr: 4, dates: "20.07 – 24.07", status: "Zapisy otwarte", badge: "Turnus 4" },
+  { nr: 5, dates: "27.07 – 31.07", status: "Zapisy otwarte", badge: "Turnus 5" },
+  { nr: 6, dates: "03.08 – 07.08", status: "Popularny", badge: "Turnus 6" },
+  { nr: 7, dates: "10.08 – 14.08", status: "Zapisy otwarte", badge: "Turnus 7" },
+  { nr: 8, dates: "17.08 – 21.08", status: "Zapisy otwarte", badge: "Turnus 8" },
+  { nr: 9, dates: "24.08 – 28.08", status: "Ostatnie miejsca", badge: "Turnus 9" },
+];
 ---
 
 <section class="camps-section" id="polkolonie">
   <div class="container">
     <div class="camps-banner">
       <div class="camps-content">
-        <span class="badge badge-sunset">Dla Dzieci i Młodzieży 7–16 Lat</span>
+        <div class="camps-badges">
+          <span class="badge badge-sunset">Dla Dzieci i Młodzieży 7–16 Lat</span>
+          <span class="badge badge-limit"><i class="fa-solid fa-users" aria-hidden="true"></i> Grupy max 15 osób</span>
+        </div>
+
         <h2 class="camps-title">Półkolonie Wakeboardowe <span class="text-gradient">WakeWakacje</span></h2>
         
         <p class="camps-desc">
-          Oficjalne letnie obozy i półkolonie sportów wodnych nad Stawami Stefańskiego.
-          Codzienna nauka pływania na wyciągu 2.0 pod okiem wielokrotnego Mistrza Polski Mateusza Gaworskiego, 
-          kompletny sprzęt, opieka wykwalifikowanych wychowawców, obiad i ubezpieczenie NNW.
+          Oficjalne letnie obozy i półkolonie sportów wodnych nad Stawami Stefańskiego w Łodzi.
+          Codzienna nauka pływania na wyciągu 2.0 pod okiem wielokrotnego Mistrza Polski <strong>Mateusza Gaworskiego</strong>, 
+          kompletny sprzęt (deski, kaski, kamizelki, pianki), opieka wykwalifikowanych wychowawców, pełne wyżywienie i ubezpieczenie NNW.
         </p>
 
         <div class="camps-highlights">
@@ -20,21 +36,21 @@ import { siteConfig } from '../content/site';
             <i class="fa-solid fa-person-swimming" aria-hidden="true"></i>
             <div>
               <strong>2 bloki na wodzie dziennie</strong>
-              <small>Ok. 6 godzin pływania w tygodniu</small>
+              <small>Ok. 6 godzin pływania i treningu w tygodniu</small>
             </div>
           </div>
           <div class="highlight-item">
             <i class="fa-solid fa-utensils" aria-hidden="true"></i>
             <div>
               <strong>Pełne wyżywienie</strong>
-              <small>Ciepły obiad, owoce i napoje</small>
+              <small>Ciepły 2-daniowy obiad, owoce i napoje</small>
             </div>
           </div>
           <div class="highlight-item">
-            <i class="fa-solid fa-shield-virus" aria-hidden="true"></i>
+            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
             <div>
               <strong>100% Bezpieczeństwa</strong>
-              <small>Ratownik, kamizelki i kaski</small>
+              <small>Ratownik WOPR, asekuracja, kaski z certyfikatem</small>
             </div>
           </div>
           <div class="highlight-item">
@@ -43,6 +59,19 @@ import { siteConfig } from '../content/site';
               <strong>Opieka 7:00 – 16:00</strong>
               <small>Turnusy od poniedziałku do piątku</small>
             </div>
+          </div>
+        </div>
+
+        <!-- Kalendarz oficjalnych turnusów -->
+        <div class="camps-schedule-box">
+          <h3 class="schedule-title"><i class="fa-regular fa-calendar-check" aria-hidden="true"></i> Harmonogram Turnusów Lato:</h3>
+          <div class="schedule-grid">
+            {turns.map(t => (
+              <div class="schedule-pill">
+                <span class="pill-nr">{t.nr}</span>
+                <span class="pill-dates">{t.dates}</span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -59,20 +88,28 @@ import { siteConfig } from '../content/site';
       </div>
 
       <div class="camps-visual">
-        <img 
-          src="/images/park/2P0A5175.jpg" 
-          alt="Dzieci i instruktorzy na półkoloniach wakeboardowych w Wake & Roll Park" 
-          loading="lazy"
-          class="camps-img"
-          width="600"
-          height="450"
-        />
-        <div class="camps-coach-card">
-          <i class="fa-solid fa-medal coach-badge" aria-hidden="true"></i>
-          <div>
-            <strong>Mateusz Gaworski</strong>
-            <small>Główny Trener • Mistrz Polski</small>
+        <div class="visual-wrapper">
+          <img 
+            src="/images/park/2P0A5175.jpg" 
+            alt="Dzieci i instruktorzy na półkoloniach wakeboardowych WakeWakacje w Wake & Roll Park" 
+            loading="lazy"
+            class="camps-img"
+            width="600"
+            height="450"
+          />
+          <div class="camps-coach-card">
+            <i class="fa-solid fa-medal coach-badge" aria-hidden="true"></i>
+            <div>
+              <strong>Mateusz Gaworski</strong>
+              <small>Główny Trener • Wielokrotny Mistrz Polski</small>
+            </div>
           </div>
+        </div>
+        
+        <div class="camps-feature-strip">
+          <div class="strip-item"><i class="fa-solid fa-person-skiing" aria-hidden="true"></i> Trening na 2.0</div>
+          <div class="strip-item"><i class="fa-solid fa-volleyball" aria-hidden="true"></i> Gry Plażowe</div>
+          <div class="strip-item"><i class="fa-solid fa-award" aria-hidden="true"></i> Dyplom Ukończenia</div>
         </div>
       </div>
     </div>
@@ -83,19 +120,21 @@ import { siteConfig } from '../content/site';
   .camps-section {
     padding: 80px 0;
     background: #060a12;
+    position: relative;
   }
 
   .camps-banner {
-    background: linear-gradient(135deg, rgba(16, 28, 52, 0.9) 0%, rgba(10, 16, 30, 0.95) 100%);
-    border: 1px solid rgba(255, 126, 95, 0.3);
+    background: linear-gradient(135deg, rgba(16, 28, 52, 0.95) 0%, rgba(10, 16, 30, 0.98) 100%);
+    border: 1px solid rgba(255, 126, 95, 0.35);
     border-radius: var(--radius-lg);
     padding: 48px 40px;
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-columns: 1.25fr 0.85fr;
     gap: 40px;
     align-items: center;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   }
 
   @media (max-width: 960px) {
@@ -105,11 +144,30 @@ import { siteConfig } from '../content/site';
     }
   }
 
+  .camps-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .badge-limit {
+    background: rgba(0, 229, 255, 0.15);
+    border: 1px solid rgba(0, 229, 255, 0.4);
+    color: var(--color-accent-blue);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+  }
+
   .camps-title {
     font-size: clamp(1.8rem, 3.5vw, 2.6rem);
     font-weight: 800;
     color: #fff;
-    margin: 12px 0 16px 0;
+    margin: 14px 0 16px 0;
     line-height: 1.2;
   }
 
@@ -117,17 +175,17 @@ import { siteConfig } from '../content/site';
     font-size: 1rem;
     color: var(--color-text-muted);
     line-height: 1.6;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
 
   .camps-highlights {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 540px) {
     .camps-highlights {
       grid-template-columns: 1fr;
     }
@@ -135,67 +193,148 @@ import { siteConfig } from '../content/site';
 
   .highlight-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
-    background: rgba(255, 255, 255, 0.04);
-    padding: 12px 14px;
-    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
   }
 
   .highlight-item i {
-    font-size: 1.3rem;
-    color: var(--color-accent-sunset);
+    color: var(--color-accent-orange);
+    font-size: 1.25rem;
+    margin-top: 3px;
   }
 
   .highlight-item strong {
     display: block;
-    font-size: 0.875rem;
     color: #fff;
+    font-size: 0.95rem;
   }
 
   .highlight-item small {
-    font-size: 0.75rem;
     color: var(--color-text-muted);
+    font-size: 0.8rem;
+  }
+
+  .camps-schedule-box {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 28px;
+  }
+
+  .schedule-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .schedule-title i {
+    color: var(--color-accent-blue);
+  }
+
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .schedule-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .schedule-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+  }
+
+  .pill-nr {
+    background: var(--color-accent-orange);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pill-dates {
+    color: #e2e8f0;
+    font-weight: 600;
   }
 
   .camps-actions {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: 20px;
+    flex-wrap: wrap;
   }
 
   .camps-phone-link {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: #cbd5e1;
+    color: var(--color-text-muted);
     font-size: 0.9rem;
-    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .camps-phone-link:hover {
+    color: #fff;
+  }
+
+  .camps-phone-link i {
+    color: var(--color-accent-blue);
   }
 
   .camps-phone-link strong {
     color: #fff;
   }
 
-  .camps-phone-link:hover {
-    color: var(--color-primary);
+  .camps-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
-  /* Wizualia */
-  .camps-visual {
+  .visual-wrapper {
     position: relative;
     border-radius: var(--radius-md);
     overflow: hidden;
-    aspect-ratio: 4 / 3;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .camps-img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 4/3;
     object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .camps-img:hover {
+    transform: scale(1.03);
   }
 
   .camps-coach-card {
@@ -203,30 +342,51 @@ import { siteConfig } from '../content/site';
     bottom: 16px;
     left: 16px;
     right: 16px;
-    background: rgba(10, 18, 34, 0.85);
+    background: rgba(10, 16, 30, 0.88);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-sm);
     padding: 12px 16px;
-    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     gap: 12px;
   }
 
   .coach-badge {
-    color: #fbbf24;
-    font-size: 1.4rem;
+    color: #ffd700;
+    font-size: 1.5rem;
   }
 
   .camps-coach-card strong {
     display: block;
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .camps-coach-card small {
-    color: var(--color-primary);
-    font-size: 0.75rem;
+    color: var(--color-accent-blue);
+    font-size: 0.8rem;
     font-weight: 600;
+  }
+
+  .camps-feature-strip {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    color: #cbd5e1;
+  }
+
+  .strip-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .strip-item i {
+    color: var(--color-accent-orange);
   }
 </style>

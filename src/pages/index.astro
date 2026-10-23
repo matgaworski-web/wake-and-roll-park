@@ -3,10 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import HeroSlider from '../components/HeroSlider.astro';
 import Attractions from '../components/Attractions.astro';
 import PricingTable from '../components/PricingTable.astro';
+import WhyUs from '../components/WhyUs.astro';
 import PassesSection from '../components/PassesSection.astro';
 import BookingCalendar from '../components/BookingCalendar.astro';
 import BeginnersGuide from '../components/BeginnersGuide.astro';
 import Gallery from '../components/Gallery.astro';
+import SocialFeed from '../components/SocialFeed.astro';
 import WakeCamps from '../components/WakeCamps.astro';
 import FAQ from '../components/FAQ.astro';
 import ContactMap from '../components/ContactMap.astro';
@@ -19,27 +21,33 @@ import ContactMap from '../components/ContactMap.astro';
   <!-- 2. O parku i dostępne atrakcje -->
   <Attractions />
 
-  <!-- 3. Oferta i cennik oficjalny -->
+  <!-- 3. Dlaczego my (analiza na tle konkurencji i przewagi) -->
+  <WhyUs />
+
+  <!-- 4. Oferta i cennik oficjalny -->
   <PricingTable />
 
-  <!-- 4. Karnety Sezon 2027 (Zakup tradycyjnym przelewem) -->
+  <!-- 5. Karnety Sezon 2027 (Zakup tradycyjnym przelewem) -->
   <PassesSection />
 
-  <!-- 5. Kalendarz rezerwacji online (Tor 2.0 i SUP) -->
+  <!-- 6. Kalendarz rezerwacji online (Tor 2.0 i SUP) -->
   <BookingCalendar />
 
-  <!-- 6. Informacje dla początkujących -->
+  <!-- 7. Informacje dla początkujących -->
   <BeginnersGuide />
 
-  <!-- 7. Autentyczna galeria zdjęć z parku -->
+  <!-- 8. Autentyczna galeria zdjęć z parku -->
   <Gallery />
 
-  <!-- 8. Półkolonie dla dzieci WakeWakacje -->
+  <!-- 9. Żywy feed Instagram & Facebook -->
+  <SocialFeed />
+
+  <!-- 10. Półkolonie dla dzieci WakeWakacje (Oficjalne turnusy i max 15 osób) -->
   <WakeCamps />
 
-  <!-- 9. Najczęstsze pytania i odpowiedzi (FAQ) -->
+  <!-- 11. Najczęstsze pytania i odpowiedzi (FAQ) -->
   <FAQ />
 
-  <!-- 10. Kontakt, mapa i wskazówki dojazdu -->
+  <!-- 12. Kontakt, mapa i wskazówki dojazdu -->
   <ContactMap />
 </Layout>
