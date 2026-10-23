@@ -13,7 +13,11 @@ async function checkZone(zoneName) {
   console.log(`Zone: ${zone.name} | Status: ${zone.status} | ID: ${zone.id}`);
   console.log(`Nameservers: ${zone.name_servers.join(', ')}`);
 
-  // Check DNS records
+  const sslRes = await fetch(`https://api.cloudflare.com/client/v4/zones/${zone.id}/settings/ssl`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const sslData = await sslRes.json();
+  console.log(`SSL Mode: ${sslData.result?.value}`);
   const dnsRes = await fetch(`https://api.cloudflare.com/client/v4/zones/${zone.id}/dns_records`, {
     headers: { Authorization: `Bearer ${token}` }
   });
