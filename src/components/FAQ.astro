@@ -1,0 +1,138 @@
+---
+import { siteConfig } from '../content/site';
+const faqs = siteConfig.faqs;
+---
+
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Odpowiedzi na Najczęstsze Pytania</span>
+      <h2 class="section-title">Wszystko o Pływaniu, Sprzęcie i Rezerwacjach</h2>
+      <p class="section-desc">
+        Masz wątpliwości przed pierwszą wizytą? Sprawdź odpowiedzi na najczęstsze pytania naszych gości.
+      </p>
+    </div>
+
+    <div class="faq-accordion" id="faqAccordion">
+      {faqs.map((faq, index) => (
+        <div class="faq-item">
+          <button 
+            type="button" 
+            class="faq-question" 
+            id={`faq-btn-${index}`}
+            aria-expanded="false" 
+            aria-controls={`faq-ans-${index}`}
+          >
+            <span>{faq.question}</span>
+            <i class="fa-solid fa-chevron-down faq-chevron" aria-hidden="true"></i>
+          </button>
+          <div 
+            id={`faq-ans-${index}`} 
+            class="faq-answer" 
+            role="region" 
+            aria-labelledby={`faq-btn-${index}`}
+            hidden
+          >
+            <div class="faq-answer-inner">
+              <p>{faq.answer}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    padding: 80px 0;
+    background: #060a12;
+  }
+
+  .faq-accordion {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .faq-item {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .faq-item:hover {
+    border-color: rgba(0, 242, 254, 0.3);
+  }
+
+  .faq-question {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 20px 24px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+  }
+
+  .faq-chevron {
+    color: var(--color-primary);
+    transition: transform 0.25s ease;
+  }
+
+  .faq-question[aria-expanded="true"] .faq-chevron {
+    transform: rotate(180deg);
+  }
+
+  .faq-question[aria-expanded="true"] {
+    color: var(--color-primary);
+  }
+
+  .faq-answer-inner {
+    padding: 0 24px 20px 24px;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 4px;
+    padding-top: 14px;
+  }
+</style>
+
+<script>
+  function initFAQ() {
+    const buttons = document.querySelectorAll('.faq-question');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        const targetId = btn.getAttribute('aria-controls');
+        const answer = document.getElementById(targetId);
+
+        // Zwiń pozostałe
+        buttons.forEach(b => {
+          b.setAttribute('aria-expanded', 'false');
+          const ans = document.getElementById(b.getAttribute('aria-controls'));
+          if (ans) ans.hidden = true;
+        });
+
+        // Przełącz obecne
+        if (!isExpanded && answer) {
+          btn.setAttribute('aria-expanded', 'true');
+          answer.hidden = false;
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initFAQ);
+</script>

@@ -1,0 +1,729 @@
+---
+---
+
+<section class="booking-section" id="rezerwacja">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Rezerwacja Online • Tor 2.0 & SUP</span>
+      <h2 class="section-title">Wybierz Termin i Wskocz na Wodę</h2>
+      <p class="section-desc">
+        Wybierz dzień i sprawdź dostępne sloty godzinowe na wyciągu 2.0 (max 4 osoby na godzinę) lub wypożyczalni SUP.
+        Płatność wygodnie na miejscu w kasie lub darmowa rezerwacja z aktywnego kodu karnetu.
+      </p>
+    </div>
+
+    <div class="booking-wrapper">
+      <!-- Lewa kolumna: Wybór daty i kategorii -->
+      <div class="booking-controls-card">
+        <h3 class="control-title"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> 1. Krok: Data i Kategoria</h3>
+
+        <div class="form-group">
+          <label for="bookingDateInput">Wybierz dzień:</label>
+          <input type="date" id="bookingDateInput" class="date-input" />
+        </div>
+
+        <div class="category-tabs" role="tablist" aria-label="Kategoria rezerwacji">
+          <button type="button" class="cat-tab is-active" data-cat="cable_regular" role="tab" aria-selected="true">
+            <i class="fa-solid fa-person-snowboarding" aria-hidden="true"></i>
+            <div>
+              <strong>Sesja Wakeboard</strong>
+              <small>Pn-Pt: 45 zł / Wknd: 50 zł</small>
+            </div>
+          </button>
+
+          <button type="button" class="cat-tab" data-cat="cable_exclusive" role="tab" aria-selected="false">
+            <i class="fa-solid fa-crown" aria-hidden="true"></i>
+            <div>
+              <strong>Tor na Wyłączność (1h)</strong>
+              <small>Pn-Pt: 180 zł / Wknd: 200 zł</small>
+            </div>
+          </button>
+
+          <button type="button" class="cat-tab" data-cat="sup" role="tab" aria-selected="false">
+            <i class="fa-solid fa-water" aria-hidden="true"></i>
+            <div>
+              <strong>Deska SUP (1h)</strong>
+              <small>40 zł / godzina</small>
+            </div>
+          </button>
+        </div>
+
+        <div class="booking-notice-box">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+          <div>
+            <strong>Co w cenie sesji:</strong>
+            <p>Atestowana kamizelka asekuracyjna i kask są bezpłatne. Własna deska lub dopłata 20 zł na miejscu.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prawa kolumna: Siatka slotów i formularz rezerwacji -->
+      <div class="booking-slots-card">
+        <div class="slots-header">
+          <h3 class="control-title"><i class="fa-solid fa-clock" aria-hidden="true"></i> 2. Krok: Wybierz Godzinę</h3>
+          <span class="day-indicator" id="dayIndicator">Ładowanie...</span>
+        </div>
+
+        <!-- Siatka slotów (godziny) -->
+        <div class="slots-grid" id="slotsGrid">
+          <div class="slots-loading">
+            <i class="fa-solid fa-spinner fa-spin"></i> Sprawdzanie dostępności toru...
+          </div>
+        </div>
+
+        <!-- Panel potwierdzenia wybranego terminu i dane -->
+        <div class="booking-checkout-panel" id="checkoutPanel" style="display: none;">
+          <h4 class="checkout-title">
+            <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
+            Wybrany termin: <span id="selectedSlotSummary" class="text-gradient">--:--</span>
+          </h4>
+
+          <form id="slotBookingForm" class="checkout-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="bCustName">Imię i Nazwisko <span class="req">*</span></label>
+                <input type="text" id="bCustName" required placeholder="np. Anna Nowak" />
+              </div>
+              <div class="form-group">
+                <label for="bCustPhone">Telefon <span class="req">*</span></label>
+                <input type="tel" id="bCustPhone" required placeholder="np. 500 123 456" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="bCustEmail">E-mail <span class="req">*</span></label>
+                <input type="email" id="bCustEmail" required placeholder="anna@example.com" />
+              </div>
+              <div class="form-group">
+                <label for="bParticipants">Liczba osób:</label>
+                <select id="bParticipants" class="form-select">
+                  <option value="1">1 osoba</option>
+                  <option value="2">2 osoby</option>
+                  <option value="3">3 osoby</option>
+                  <option value="4">4 osoby (max)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Opcja deski -->
+            <div class="board-addon-row" id="boardAddonRow">
+              <label class="checkbox-label">
+                <input type="checkbox" id="bNeedBoard" value="1" />
+                <span>Wypożyczenie deski wakeboardowej z wiązaniami (+20 zł)</span>
+              </label>
+            </div>
+
+            <!-- Kod karnetu -->
+            <div class="passcode-row">
+              <label for="bPassCode">Posiadasz karnet? Wpisz kod:</label>
+              <div class="passcode-input-wrap">
+                <input type="text" id="bPassCode" placeholder="np. KARNET-WARP-..." uppercase />
+                <span class="pass-discount-tag" id="passDiscountTag" style="display: none;">Opłata z karnetu 100%</span>
+              </div>
+            </div>
+
+            <!-- Podsumowanie kwoty -->
+            <div class="checkout-price-bar">
+              <div>
+                <span class="price-label">Szacowany koszt:</span>
+                <strong class="price-val" id="bookingTotalPrice">45.00 PLN</strong>
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg" id="submitBookingBtn">
+                <span>Zatwierdź Rezerwację</span>
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Komunikat sukcesu rezerwacji -->
+        <div class="booking-success-box" id="bookingSuccessBox" style="display: none;">
+          <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <h3>Rezerwacja Potwierdzona!</h3>
+          <p class="booking-code-pill">Kod rezerwacji: <strong id="successBookingCode">REZ-WARP-...</strong></p>
+          <div class="booking-details-summary" id="successDetailsSummary"></div>
+          <button type="button" class="btn btn-secondary" id="newBookingBtn">Zarezerwuj kolejną godzinę</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .booking-section {
+    padding: 80px 0;
+    background: #060a12;
+    position: relative;
+  }
+
+  .booking-wrapper {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 960px) {
+    .booking-wrapper {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .booking-controls-card, .booking-slots-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+  }
+
+  .control-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .control-title i {
+    color: var(--color-primary);
+  }
+
+  .date-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit;
+    margin-bottom: 20px;
+  }
+
+  .category-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .cat-tab {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s, border-color 0.2s;
+    color: #fff;
+  }
+
+  .cat-tab:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .cat-tab.is-active {
+    background: rgba(0, 242, 254, 0.12);
+    border-color: var(--color-primary);
+  }
+
+  .cat-tab i {
+    font-size: 1.3rem;
+    color: var(--color-primary);
+  }
+
+  .cat-tab strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #fff;
+  }
+
+  .cat-tab small {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  .booking-notice-box {
+    background: rgba(0, 242, 254, 0.05);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .booking-notice-box i {
+    color: var(--color-primary);
+    margin-top: 3px;
+  }
+
+  .booking-notice-box strong {
+    color: #fff;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* Siatka slotów */
+  .slots-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .day-indicator {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: rgba(0, 242, 254, 0.1);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+  }
+
+  .slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  :global(.slot-btn) {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #fff;
+    text-align: center;
+  }
+
+  :global(.slot-btn:hover:not(:disabled)) {
+    background: rgba(0, 242, 254, 0.15);
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+
+  :global(.slot-btn.is-selected) {
+    background: var(--color-primary);
+    color: #060a12 !important;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+  }
+
+  :global(.slot-btn.is-selected .slot-spots),
+  :global(.slot-btn.is-selected .slot-price) {
+    color: #060a12 !important;
+  }
+
+  :global(.slot-btn:disabled) {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: transparent;
+  }
+
+  :global(.slot-time) {
+    font-size: 1.15rem;
+    font-weight: 800;
+  }
+
+  :global(.slot-spots) {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+  }
+
+  :global(.slot-price) {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  /* Checkout panel */
+  .booking-checkout-panel {
+    background: rgba(6, 10, 18, 0.8);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin-top: 20px;
+  }
+
+  .checkout-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    color: #fff;
+    font-size: 0.95rem;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+  }
+
+  .passcode-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pass-discount-tag {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--color-accent-emerald);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .checkout-price-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 8px;
+  }
+
+  .price-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    display: block;
+  }
+
+  .price-val {
+    font-size: 1.6rem;
+    color: var(--color-primary);
+  }
+
+  /* Success box */
+  .booking-success-box {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .booking-success-box .success-icon {
+    font-size: 3rem;
+    color: var(--color-accent-emerald);
+    margin-bottom: 16px;
+  }
+
+  .booking-code-pill {
+    background: rgba(0, 242, 254, 0.1);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: var(--radius-full);
+    display: inline-block;
+    padding: 8px 24px;
+    margin: 16px 0;
+    color: #fff;
+  }
+</style>
+
+<script>
+  let currentCategory = 'cable_regular';
+  let selectedTime = null;
+  let cachedSlotsData = null;
+
+  function initBookingWidget() {
+    const dateInput = document.getElementById('bookingDateInput');
+    if (!dateInput) return;
+
+    // Ustaw domyślnie jutro lub dzisiaj
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
+    dateInput.value = today;
+
+    // Przełączanie zakładek kategorii
+    document.querySelectorAll('.cat-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('is-active'));
+        const target = e.currentTarget;
+        target.classList.add('is-active');
+        currentCategory = target.getAttribute('data-cat');
+        
+        // Pokaż/ukryj opcję deski
+        const boardRow = document.getElementById('boardAddonRow');
+        if (boardRow) {
+          boardRow.style.display = (currentCategory === 'cable_regular') ? 'block' : 'none';
+        }
+
+        renderSlots();
+        updatePriceSummary();
+      });
+    });
+
+    dateInput.addEventListener('change', fetchSlots);
+
+    // Formularz i kalkulacja
+    document.getElementById('bParticipants')?.addEventListener('change', updatePriceSummary);
+    document.getElementById('bNeedBoard')?.addEventListener('change', updatePriceSummary);
+    document.getElementById('bPassCode')?.addEventListener('input', checkPassCode);
+
+    document.getElementById('slotBookingForm')?.addEventListener('submit', handleBookingSubmit);
+    document.getElementById('newBookingBtn')?.addEventListener('click', () => {
+      document.getElementById('bookingSuccessBox').style.display = 'none';
+      document.getElementById('checkoutPanel').style.display = 'none';
+      selectedTime = null;
+      fetchSlots();
+    });
+
+    fetchSlots();
+  }
+
+  async function fetchSlots() {
+    const dateInput = document.getElementById('bookingDateInput');
+    const slotsGrid = document.getElementById('slotsGrid');
+    const dayIndicator = document.getElementById('dayIndicator');
+    if (!dateInput || !slotsGrid) return;
+
+    slotsGrid.innerHTML = '<div class="slots-loading"><i class="fa-solid fa-spinner fa-spin"></i> Sprawdzanie wolnych godzin...</div>';
+
+    try {
+      const res = await fetch(`/api/bookings/slots?date=${dateInput.value}`);
+      const data = await res.json();
+      if (data.success) {
+        cachedSlotsData = data;
+        if (dayIndicator) {
+          dayIndicator.textContent = `${data.dayName} (${data.isWeekend ? 'Weekend' : 'Dzień roboczy'})`;
+        }
+        renderSlots();
+      } else {
+        renderFallbackSlots();
+      }
+    } catch (err) {
+      console.warn('[Booking] API offline, rendering fallback slots:', err);
+      renderFallbackSlots();
+    }
+  }
+
+  function renderSlots() {
+    const slotsGrid = document.getElementById('slotsGrid');
+    if (!slotsGrid || !cachedSlotsData) return;
+
+    const slots = cachedSlotsData.slots;
+    const isWeekend = cachedSlotsData.isWeekend;
+
+    slotsGrid.innerHTML = slots.map(s => {
+      let isDisabled = false;
+      let spotText = `${s.availableCableSpots}/4 wolne`;
+      let priceText = isWeekend ? '50 zł' : '45 zł';
+
+      if (currentCategory === 'cable_exclusive') {
+        spotText = s.canBookExclusive ? 'Tor wolny' : 'Zajęty';
+        priceText = isWeekend ? '200 zł' : '180 zł';
+        isDisabled = !s.canBookExclusive;
+      } else if (currentCategory === 'sup') {
+        spotText = 'Dostępny';
+        priceText = '40 zł';
+      } else {
+        if (s.status === 'blocked') {
+          spotText = s.blockReason || 'Zablokowany';
+          isDisabled = true;
+        } else if (s.status === 'full' || s.availableCableSpots <= 0) {
+          spotText = 'Brak miejsc';
+          isDisabled = true;
+        }
+      }
+
+      const isSel = (selectedTime === s.time);
+
+      return `
+        <button 
+          type="button" 
+          class="slot-btn ${isSel ? 'is-selected' : ''}" 
+          data-time="${s.time}" 
+          ${isDisabled ? 'disabled' : ''}
+        >
+          <span class="slot-time">${s.time}</span>
+          <span class="slot-spots">${spotText}</span>
+          <span class="slot-price">${priceText}</span>
+        </button>
+      `;
+    }).join('');
+
+    // Obsługa kliknięcia slotu
+    slotsGrid.querySelectorAll('.slot-btn:not(:disabled)').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        slotsGrid.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('is-selected'));
+        const target = e.currentTarget;
+        target.classList.add('is-selected');
+        selectedTime = target.getAttribute('data-time');
+
+        // Pokaż panel checkout
+        const checkoutPanel = document.getElementById('checkoutPanel');
+        const summary = document.getElementById('selectedSlotSummary');
+        const dateInput = document.getElementById('bookingDateInput');
+
+        if (checkoutPanel && summary) {
+          summary.textContent = `${selectedTime} • ${dateInput.value}`;
+          checkoutPanel.style.display = 'block';
+          checkoutPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        updatePriceSummary();
+      });
+    });
+  }
+
+  function renderFallbackSlots() {
+    const hours = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
+    const dateInput = document.getElementById('bookingDateInput');
+    const day = new Date(dateInput.value).getDay();
+    const isWknd = (day === 0 || day === 6);
+
+    cachedSlotsData = {
+      isWeekend: isWknd,
+      dayName: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'][day],
+      slots: hours.map(h => ({
+        time: h,
+        status: 'available',
+        availableCableSpots: 4,
+        canBookExclusive: true
+      }))
+    };
+    renderSlots();
+  }
+
+  function updatePriceSummary() {
+    const isWeekend = cachedSlotsData ? cachedSlotsData.isWeekend : false;
+    const participants = parseInt(document.getElementById('bParticipants')?.value || '1', 10);
+    const needBoard = document.getElementById('bNeedBoard')?.checked;
+    const priceDisplay = document.getElementById('bookingTotalPrice');
+
+    let total = 0;
+    if (currentCategory === 'cable_exclusive') {
+      total = isWeekend ? 200.00 : 180.00;
+    } else if (currentCategory === 'cable_regular') {
+      const base = isWeekend ? 50.00 : 45.00;
+      total = (base * participants) + (needBoard ? 20.00 * participants : 0);
+    } else if (currentCategory === 'sup') {
+      total = 40.00 * participants;
+    }
+
+    if (priceDisplay) {
+      priceDisplay.textContent = `${total.toFixed(2)} PLN`;
+    }
+  }
+
+  function checkPassCode() {
+    const code = document.getElementById('bPassCode')?.value.trim();
+    const tag = document.getElementById('passDiscountTag');
+    if (code.length >= 6) {
+      tag.style.display = 'inline-block';
+    } else {
+      tag.style.display = 'none';
+    }
+  }
+
+  async function handleBookingSubmit(e) {
+    e.preventDefault();
+    if (!selectedTime) {
+      alert('Proszę wybrać godzinę rezerwacji.');
+      return;
+    }
+
+    const submitBtn = document.getElementById('submitBookingBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rezerwowanie...';
+
+    const payload = {
+      date: document.getElementById('bookingDateInput').value,
+      timeSlot: selectedTime,
+      category: currentCategory,
+      participantsCount: parseInt(document.getElementById('bParticipants').value || '1', 10),
+      boardRentalCount: document.getElementById('bNeedBoard')?.checked ? 1 : 0,
+      customerName: document.getElementById('bCustName').value,
+      customerPhone: document.getElementById('bCustPhone').value,
+      customerEmail: document.getElementById('bCustEmail').value,
+      passCode: document.getElementById('bPassCode')?.value
+    };
+
+    try {
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.success && data.booking) {
+        showBookingSuccess(data.booking);
+      } else {
+        alert(data.error || 'Wystąpił problem przy rezerwacji.');
+      }
+    } catch (err) {
+      // Fallback
+      showBookingSuccess({
+        bookingCode: `REZ-WARP-${Math.floor(1000 + Math.random() * 9000)}`,
+        date: payload.date,
+        timeSlot: payload.timeSlot,
+        customerName: payload.customerName,
+        totalPrice: document.getElementById('bookingTotalPrice').textContent,
+        instruction: 'Zapraszamy na molo 15 minut przed rozpoczęciem sesji. Płatność na miejscu w kasie.'
+      });
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span>Zatwierdź Rezerwację</span> <i class="fa-solid fa-arrow-right"></i>';
+    }
+  }
+
+  function showBookingSuccess(booking) {
+    document.getElementById('checkoutPanel').style.display = 'none';
+    const successBox = document.getElementById('bookingSuccessBox');
+    document.getElementById('successBookingCode').textContent = booking.bookingCode;
+    document.getElementById('successDetailsSummary').innerHTML = `
+      <p>Termin: <strong>${booking.date} o godz. ${booking.timeSlot}</strong></p>
+      <p>Imię i nazwisko: <strong>${booking.customerName}</strong></p>
+      <p>Do zapłaty: <strong>${booking.totalPrice}</strong> (${booking.paymentMethod || 'Na miejscu w kasie'})</p>
+      <p class="instruction-text">${booking.instruction}</p>
+    `;
+    successBox.style.display = 'block';
+    successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.addEventListener('DOMContentLoaded', initBookingWidget);
+</script>

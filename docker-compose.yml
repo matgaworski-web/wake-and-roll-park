@@ -1,0 +1,14 @@
+services:
+  wakeandroll-api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: wakeandroll-api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8793:8793"
+    volumes:
+      - ./server/data:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=8793

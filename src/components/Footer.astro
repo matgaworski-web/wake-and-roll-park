@@ -1,0 +1,195 @@
+---
+import { siteConfig } from '../content/site';
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-content">
+    <div class="footer-brand-col">
+      <div class="footer-logo">
+        <i class="fa-solid fa-water" aria-hidden="true"></i>
+        <span>{siteConfig.name}</span>
+      </div>
+      <p class="footer-desc">
+        Oficjalny kompleks sportów wodnych i strefa rekreacyjna na Stawach Stefańskiego w Łodzi.
+        Działamy nieprzerwanie z pasją od {siteConfig.foundedYear} roku.
+      </p>
+      <div class="footer-social-links">
+        <a href={siteConfig.socials.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook Wake and Roll Park">
+          <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        </a>
+        <a href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram @wakeandrollpark">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-nav-col">
+      <strong class="col-title">Na Skróty</strong>
+      <ul class="footer-links">
+        <li><a href="#atrakcje">Wyciąg i Atrakcje</a></li>
+        <li><a href="#cennik">Cennik Sesji</a></li>
+        <li><a href="#karnety">Karnety Sezon 2027</a></li>
+        <li><a href="#rezerwacja">Rezerwacja Toru</a></li>
+        <li><a href="#poczatkujacy">Dla Początkujących</a></li>
+        <li><a href="#galeria">Zdjęcia z Obiektu</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-nav-col">
+      <strong class="col-title">Inicjatywy i Projekty</strong>
+      <ul class="footer-links">
+        <li><a href="https://wakewakacje.pl/" target="_blank" rel="noopener noreferrer">Półkolonie WakeWakacje ↗</a></li>
+        <li><a href="#faq">Częste Pytania (FAQ)</a></li>
+        <li><a href="#kontakt">Dojazd i Mapa</a></li>
+        <li><a href="/admin">Panel Administratora</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-legal-col">
+      <strong class="col-title">Operator Obiektu</strong>
+      <div class="footer-legal-data">
+        <p><strong>{siteConfig.legalName}</strong></p>
+        <p>{siteConfig.contact.address.street}</p>
+        <p>{siteConfig.contact.address.postalCode} {siteConfig.contact.address.city}</p>
+        <p>NIP: {siteConfig.contact.nip}</p>
+        <p>REGON: {siteConfig.contact.regon}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container bottom-content">
+      <p>&copy; {currentYear} {siteConfig.name} Łódź. Wszelkie prawa zastrzeżone.</p>
+      <p class="hosting-note">Serwowane przez Cloudflare Edge & VPS OVH. Bezpieczeństwo i SSL aktywne.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: #04070e;
+    border-top: 1px solid var(--color-border);
+    padding-top: 64px;
+    color: var(--color-text-muted);
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 36px;
+    padding-bottom: 48px;
+  }
+
+  @media (max-width: 900px) {
+    .footer-content {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .footer-content {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .footer-logo i {
+    color: var(--color-primary);
+  }
+
+  .footer-desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 320px;
+  }
+
+  .footer-social-links {
+    display: flex;
+    gap: 12px;
+  }
+
+  .footer-social-links a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .footer-social-links a:hover {
+    background: var(--color-primary);
+    color: #060a12;
+  }
+
+  .col-title {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-links a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover {
+    color: var(--color-primary);
+  }
+
+  .footer-legal-data {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-text-dim);
+  }
+
+  .footer-legal-data strong {
+    color: #cbd5e1;
+  }
+
+  .footer-bottom {
+    background: rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 20px 0;
+    font-size: 0.775rem;
+  }
+
+  .bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .hosting-note {
+    color: var(--color-text-dim);
+  }
+</style>

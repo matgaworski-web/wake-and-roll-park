@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroSlider from '../components/HeroSlider.astro';
+import Attractions from '../components/Attractions.astro';
+import PricingTable from '../components/PricingTable.astro';
+import PassesSection from '../components/PassesSection.astro';
+import BookingCalendar from '../components/BookingCalendar.astro';
+import BeginnersGuide from '../components/BeginnersGuide.astro';
+import Gallery from '../components/Gallery.astro';
+import WakeCamps from '../components/WakeCamps.astro';
+import FAQ from '../components/FAQ.astro';
+import ContactMap from '../components/ContactMap.astro';
+---
+
+<Layout>
+  <!-- 1. Slider Hero (3 dopracowane slajdy) -->
+  <HeroSlider />
+
+  <!-- 2. O parku i dostępne atrakcje -->
+  <Attractions />
+
+  <!-- 3. Oferta i cennik oficjalny -->
+  <PricingTable />
+
+  <!-- 4. Karnety Sezon 2027 (Zakup tradycyjnym przelewem) -->
+  <PassesSection />
+
+  <!-- 5. Kalendarz rezerwacji online (Tor 2.0 i SUP) -->
+  <BookingCalendar />
+
+  <!-- 6. Informacje dla początkujących -->
+  <BeginnersGuide />
+
+  <!-- 7. Autentyczna galeria zdjęć z parku -->
+  <Gallery />
+
+  <!-- 8. Półkolonie dla dzieci WakeWakacje -->
+  <WakeCamps />
+
+  <!-- 9. Najczęstsze pytania i odpowiedzi (FAQ) -->
+  <FAQ />
+
+  <!-- 10. Kontakt, mapa i wskazówki dojazdu -->
+  <ContactMap />
+</Layout>

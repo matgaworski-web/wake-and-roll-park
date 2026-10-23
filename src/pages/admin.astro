@@ -1,0 +1,896 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Panel Administratora | Wake & Roll Park Łódź" noindex={true}>
+  <div class="admin-wrapper" id="adminApp">
+    <!-- Widok Logowania -->
+    <div class="admin-login-box" id="loginView">
+      <div class="login-card">
+        <div class="login-header">
+          <i class="fa-solid fa-lock login-lock-icon" aria-hidden="true"></i>
+          <h1 class="login-title">Panel Zarządzania</h1>
+          <p class="login-subtitle">Wake & Roll Park Łódź • Dostęp dla Obsługi</p>
+        </div>
+
+        <form id="adminLoginForm" class="login-form">
+          <div class="form-group">
+            <label for="adminUser">Login administratora:</label>
+            <input type="text" id="adminUser" required placeholder="admin" autocomplete="username" />
+          </div>
+
+          <div class="form-group">
+            <label for="adminPass">Hasło:</label>
+            <input type="password" id="adminPass" required placeholder="••••••••" autocomplete="current-password" />
+          </div>
+
+          <div id="loginError" class="alert-box alert-error" style="display: none;"></div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="loginBtn">
+            <span>Zaloguj do Panelu</span>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Widok Główny Panelu (po zalogowaniu) -->
+    <div class="admin-dashboard-view" id="dashboardView" style="display: none;">
+      <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+          <i class="fa-solid fa-water" aria-hidden="true"></i>
+          <div>
+            <strong>WAKE & ROLL</strong>
+            <small>PANEL MANAGERA</small>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button type="button" class="sidebar-link is-active" data-view="orders">
+            <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+            <span>Zamówienia Karnetów</span>
+            <span class="nav-count-badge" id="pendingOrdersBadge" style="display: none;">0</span>
+          </button>
+
+          <button type="button" class="sidebar-link" data-view="bookings">
+            <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+            <span>Harmonogram Toru</span>
+          </button>
+
+          <button type="button" class="sidebar-link" data-view="pricing">
+            <i class="fa-solid fa-tags" aria-hidden="true"></i>
+            <span>Cennik i Promocje</span>
+          </button>
+
+          <button type="button" class="sidebar-link" data-view="settings">
+            <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+            <span>Dane Bankowe i Płatności</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <span class="user-greeting">Zalogowano: <strong id="loggedInUsername">admin</strong></span>
+          <button type="button" class="btn btn-secondary btn-sm" id="logoutBtn">
+            <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Wyloguj
+          </button>
+        </div>
+      </aside>
+
+      <main class="admin-main-content">
+        <!-- ZAKŁADKA 1: ZAMÓWIENIA KARNETÓW -->
+        <section class="admin-tab-pane is-active" id="paneOrders">
+          <div class="pane-header">
+            <div>
+              <h2 class="pane-title">Zamówienia Karnetów (Przelew Bankowy)</h2>
+              <p class="pane-desc">Weryfikuj wpłaty na koncie bankowym i aktywuj kody karnetów dla klientów.</p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="refreshOrdersBtn">
+              <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Odśwież
+            </button>
+          </div>
+
+          <div class="stats-overview-row">
+            <div class="stat-card">
+              <span class="stat-label">Oczekujące na wpłatę:</span>
+              <strong class="stat-val text-gradient" id="statPendingOrders">0</strong>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Opłacone karnety:</span>
+              <strong class="stat-val" id="statPaidOrders">0</strong>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Suma przychodów:</span>
+              <strong class="stat-val highlight-stat" id="statRevenue">0.00 PLN</strong>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Nr zamówienia</th>
+                  <th>Klient</th>
+                  <th>Karnet</th>
+                  <th>Kwota</th>
+                  <th>Tytuł przelewu</th>
+                  <th>Data</th>
+                  <th>Status</th>
+                  <th>Akcja</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+                <tr><td colspan="8" class="text-center">Ładowanie zamówień...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ZAKŁADKA 2: HARMONOGRAM TORU -->
+        <section class="admin-tab-pane" id="paneBookings" style="display: none;">
+          <div class="pane-header">
+            <div>
+              <h2 class="pane-title">Harmonogram Toru i Rezerwacji</h2>
+              <p class="pane-desc">Podgląd obsadzenia wyciągu 2.0 i desek SUP oraz blokowanie godzin (np. burza, serwis).</p>
+            </div>
+            <div class="header-actions">
+              <input type="date" id="adminScheduleDate" class="admin-date-input" />
+              <button type="button" class="btn btn-accent btn-sm" id="openBlockModalBtn">
+                <i class="fa-solid fa-ban" aria-hidden="true"></i> Zablokuj Termin
+              </button>
+            </div>
+          </div>
+
+          <div class="schedule-timeline" id="scheduleTimeline">
+            <p>Ładowanie harmonogramu...</p>
+          </div>
+        </section>
+
+        <!-- ZAKŁADKA 3: CENNIK I PROMOCJE -->
+        <section class="admin-tab-pane" id="panePricing" style="display: none;">
+          <div class="pane-header">
+            <div>
+              <h2 class="pane-title">Zarządzanie Cennikiem Karnetów i Promocjami</h2>
+              <p class="pane-desc">Edytuj ceny regularne, uruchamiaj zatwierdzone promocje i etykiety marketingowe.</p>
+            </div>
+          </div>
+
+          <div class="pricing-manage-grid" id="pricingManageGrid">
+            <p>Ładowanie cennika...</p>
+          </div>
+        </section>
+
+        <!-- ZAKŁADKA 4: DANE BANKOWE I PŁATNOŚCI -->
+        <section class="admin-tab-pane" id="paneSettings" style="display: none;">
+          <div class="pane-header">
+            <div>
+              <h2 class="pane-title">Konfiguracja Rachunku Bankowego</h2>
+              <p class="pane-desc">Dane wyświetlane klientom do przelewu bankowego przy zakupie karnetów.</p>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <form id="bankSettingsForm" class="settings-form">
+              <div class="settings-status-box" id="bankStatusNotice"></div>
+
+              <div class="form-group">
+                <label for="setRecipientName">Nazwa Odbiorcy:</label>
+                <input type="text" id="setRecipientName" required />
+              </div>
+
+              <div class="form-group">
+                <label for="setRecipientAddr">Adres Odbiorcy:</label>
+                <input type="text" id="setRecipientAddr" required />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="setBankName">Nazwa Banku:</label>
+                  <input type="text" id="setBankName" required />
+                </div>
+                <div class="form-group">
+                  <label for="setAccountNumber">Numer Rachunku Bankowego (26 cyfr):</label>
+                  <input type="text" id="setAccountNumber" required placeholder="np. 00 1090 0000 0000 0000 0000 0000" />
+                </div>
+              </div>
+
+              <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="setIsTestMode" />
+                  <span><strong>Włącz tryb roboczy / testowy:</strong> Klienci widzą informację, że sprzedaż jest robocza do czasu weryfikacji danych.</span>
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="saveSettingsBtn">
+                  <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Zapisz Dane Bankowe
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .admin-wrapper {
+    min-height: calc(100vh - 120px);
+    background: #060a12;
+    color: #fff;
+  }
+
+  /* Logowanie */
+  .admin-login-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+  }
+
+  .login-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .login-lock-icon {
+    font-size: 2.2rem;
+    color: var(--color-primary);
+    background: rgba(0, 242, 254, 0.1);
+    padding: 16px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+
+  .login-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .login-subtitle {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .btn-block {
+    width: 100%;
+  }
+
+  .alert-box {
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+  }
+
+  .alert-error {
+    background: rgba(244, 63, 94, 0.15);
+    border: 1px solid rgba(244, 63, 94, 0.4);
+    color: #f87171;
+  }
+
+  /* Dashboard */
+  .admin-dashboard-view {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 80px);
+  }
+
+  @media (max-width: 960px) {
+    .admin-dashboard-view {
+      grid-template-columns: 1fr;
+    }
+    .admin-sidebar {
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+
+  .admin-sidebar {
+    background: #090f1d;
+    border-right: 1px solid var(--color-border);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 24px;
+  }
+
+  .sidebar-brand i {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+  }
+
+  .sidebar-brand strong {
+    display: block;
+    font-size: 1.1rem;
+    color: #fff;
+  }
+
+  .sidebar-brand small {
+    font-size: 0.7rem;
+    color: var(--color-text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sidebar-link {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s, color 0.2s;
+    width: 100%;
+  }
+
+  .sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+  }
+
+  .sidebar-link.is-active {
+    background: rgba(0, 242, 254, 0.12);
+    color: var(--color-primary);
+  }
+
+  .nav-count-badge {
+    margin-left: auto;
+    background: var(--color-accent-sunset);
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+  }
+
+  .sidebar-footer {
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .user-greeting {
+    font-size: 0.8rem;
+    color: var(--color-text-dim);
+  }
+
+  .user-greeting strong {
+    color: #cbd5e1;
+  }
+
+  /* Główna treść */
+  .admin-main-content {
+    padding: 36px 32px;
+    overflow-x: auto;
+  }
+
+  .pane-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .pane-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .pane-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .stats-overview-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--color-text-dim);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .stat-val {
+    font-size: 1.8rem;
+    font-weight: 800;
+  }
+
+  .highlight-stat {
+    color: var(--color-accent-emerald);
+  }
+
+  /* Tabele */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .admin-table th {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 14px 16px;
+    color: #cbd5e1;
+    font-weight: 700;
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+  }
+
+  .admin-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #cbd5e1;
+    vertical-align: middle;
+  }
+
+  .admin-table tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .badge-status-pending {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .badge-status-paid {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-accent-emerald);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .badge-status-cancelled {
+    background: rgba(244, 63, 94, 0.15);
+    color: var(--color-accent-rose);
+  }
+
+  .btn-confirm-payment {
+    background: var(--color-accent-emerald);
+    color: #060a12;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-confirm-payment:hover {
+    filter: brightness(1.1);
+  }
+
+  .settings-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    max-width: 700px;
+  }
+
+  .settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .settings-status-box {
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-size: 0.875rem;
+    color: #cbd5e1;
+  }
+
+  .admin-date-input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    color: #fff;
+  }
+
+  .schedule-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .timeline-slot-row {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .slot-row-time {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    width: 90px;
+  }
+</style>
+
+<script>
+  let adminToken = localStorage.getItem('war_admin_token') || null;
+
+  function initAdmin() {
+    if (adminToken) {
+      showDashboard();
+    } else {
+      showLogin();
+    }
+
+    // Obsługa logowania
+    document.getElementById('adminLoginForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const user = document.getElementById('adminUser').value;
+      const pass = document.getElementById('adminPass').value;
+      const errBox = document.getElementById('loginError');
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+
+        if (data.success && data.token) {
+          adminToken = data.token;
+          localStorage.setItem('war_admin_token', adminToken);
+          document.getElementById('loggedInUsername').textContent = data.username;
+          showDashboard();
+        } else {
+          errBox.textContent = data.error || 'Błąd logowania.';
+          errBox.style.display = 'block';
+        }
+      } catch (err) {
+        errBox.textContent = 'Błąd połączenia z API backendu.';
+        errBox.style.display = 'block';
+      }
+    });
+
+    // Wylogowanie
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+      localStorage.removeItem('war_admin_token');
+      adminToken = null;
+      showLogin();
+    });
+
+    // Przełączanie zakładek
+    document.querySelectorAll('.sidebar-link').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('is-active'));
+        const target = e.currentTarget;
+        target.classList.add('is-active');
+
+        const view = target.getAttribute('data-view');
+        showTab(view);
+      });
+    });
+
+    document.getElementById('refreshOrdersBtn')?.addEventListener('click', loadOrders);
+    document.getElementById('bankSettingsForm')?.addEventListener('submit', handleSaveSettings);
+    document.getElementById('adminScheduleDate')?.addEventListener('change', loadSchedule);
+  }
+
+  function showLogin() {
+    document.getElementById('loginView').style.display = 'flex';
+    document.getElementById('dashboardView').style.display = 'none';
+  }
+
+  function showDashboard() {
+    document.getElementById('loginView').style.display = 'none';
+    document.getElementById('dashboardView').style.display = 'grid';
+    loadDashboardStats();
+    loadOrders();
+    loadSettings();
+
+    const dateInp = document.getElementById('adminScheduleDate');
+    if (dateInp) {
+      dateInp.value = new Date().toISOString().split('T')[0];
+    }
+  }
+
+  function showTab(viewName) {
+    const tabs = {
+      orders: document.getElementById('paneOrders'),
+      bookings: document.getElementById('paneBookings'),
+      pricing: document.getElementById('panePricing'),
+      settings: document.getElementById('paneSettings')
+    };
+
+    Object.values(tabs).forEach(p => { if (p) p.style.display = 'none'; });
+
+    if (tabs[viewName]) {
+      tabs[viewName].style.display = 'block';
+      if (viewName === 'bookings') loadSchedule();
+      if (viewName === 'orders') loadOrders();
+      if (viewName === 'settings') loadSettings();
+    }
+  }
+
+  async function loadDashboardStats() {
+    try {
+      const res = await fetch('/api/admin/dashboard-stats', {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('statPendingOrders').textContent = data.stats.pendingOrdersCount;
+        document.getElementById('statPaidOrders').textContent = data.stats.paidOrdersCount;
+        document.getElementById('statRevenue').textContent = `${data.stats.totalPassRevenue.toFixed(2)} PLN`;
+
+        const badge = document.getElementById('pendingOrdersBadge');
+        if (data.stats.pendingOrdersCount > 0 && badge) {
+          badge.textContent = data.stats.pendingOrdersCount;
+          badge.style.display = 'inline-block';
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function loadOrders() {
+    const tbody = document.getElementById('ordersTableBody');
+    if (!tbody) return;
+
+    try {
+      const res = await fetch('/api/admin/orders', {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+
+      if (data.success && data.orders) {
+        if (data.orders.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center">Brak zamówień w systemie.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = data.orders.map(o => {
+          let statusBadge = `<span class="badge badge-status-${o.status}">${o.status.toUpperCase()}</span>`;
+          let actionBtn = '—';
+
+          if (o.status === 'pending') {
+            actionBtn = `
+              <button type="button" class="btn-confirm-payment" data-order-id="${o.id}">
+                <i class="fa-solid fa-check"></i> Potwierdź Wpłatę
+              </button>
+            `;
+          } else if (o.status === 'paid' && o.active_pass_code) {
+            actionBtn = `<code style="color:var(--color-primary);">${o.active_pass_code}</code>`;
+          }
+
+          return `
+            <tr>
+              <td><strong>${o.order_number}</strong></td>
+              <td>${o.customer_name}<br><small>${o.customer_phone}</small></td>
+              <td>${o.pass_name}</td>
+              <td><strong>${o.amount.toFixed(2)} zł</strong></td>
+              <td><code>${o.transfer_title}</code></td>
+              <td>${o.created_at.slice(0, 16).replace('T', ' ')}</td>
+              <td>${statusBadge}</td>
+              <td>${actionBtn}</td>
+            </tr>
+          `;
+        }).join('');
+
+        // Podepnij przyciski potwierdzenia wpłaty
+        tbody.querySelectorAll('.btn-confirm-payment').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const id = e.currentTarget.getAttribute('data-order-id');
+            if (confirm(`Czy na pewno sprawdziłeś wyciąg bankowy i potwierdzasz zaksięgowanie wpłaty dla zamówienia #${id}?`)) {
+              btn.disabled = true;
+              btn.textContent = 'Aktywowanie...';
+              await confirmPayment(id);
+            }
+          });
+        });
+      }
+    } catch (err) {
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center text-error">Błąd pobierania zamówień.</td></tr>';
+    }
+  }
+
+  async function confirmPayment(orderId) {
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/confirm-payment`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(data.message);
+        loadOrders();
+        loadDashboardStats();
+      } else {
+        alert(data.error || 'Błąd zatwierdzania wpłaty.');
+      }
+    } catch (err) {
+      alert('Błąd sieci.');
+    }
+  }
+
+  async function loadSchedule() {
+    const timeline = document.getElementById('scheduleTimeline');
+    const date = document.getElementById('adminScheduleDate')?.value;
+    if (!timeline || !date) return;
+
+    timeline.innerHTML = '<p>Sprawdzanie terminów na ' + date + '...</p>';
+
+    try {
+      const res = await fetch(`/api/admin/bookings?date=${date}`, {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        const hours = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
+        const bookings = data.bookings;
+        const blocked = data.blockedSlots;
+
+        timeline.innerHTML = hours.map(h => {
+          const slotBookings = bookings.filter(b => b.time_slot === h);
+          const isBlocked = blocked.find(b => b.time_slot === h || b.time_slot === 'ALL_DAY');
+
+          let content = '<span style="color:var(--color-accent-emerald);">Tor Wolny (0/4 osób)</span>';
+          if (isBlocked) {
+            content = `<span style="color:var(--color-accent-rose);"><i class="fa-solid fa-ban"></i> Zablokowane: ${isBlocked.reason}</span>`;
+          } else if (slotBookings.length > 0) {
+            content = slotBookings.map(b => `
+              <div><strong>${b.customer_name}</strong> (${b.category === 'cable_exclusive' ? 'WYŁĄCZNOŚĆ' : `${b.participants_count} os.`}) - ${b.customer_phone}</div>
+            `).join('');
+          }
+
+          return `
+            <div class="timeline-slot-row">
+              <span class="slot-row-time">${h}</span>
+              <div class="slot-row-details">${content}</div>
+            </div>
+          `;
+        }).join('');
+      }
+    } catch (err) {
+      timeline.innerHTML = '<p class="text-error">Błąd pobierania harmonogramu.</p>';
+    }
+  }
+
+  async function loadSettings() {
+    try {
+      const res = await fetch('/api/admin/settings', {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+      if (data.success && data.settings) {
+        const s = data.settings;
+        document.getElementById('setRecipientName').value = s.recipient_name || '';
+        document.getElementById('setRecipientAddr').value = s.recipient_address || '';
+        document.getElementById('setBankName').value = s.bank_name || '';
+        document.getElementById('setAccountNumber').value = s.account_number || '';
+        document.getElementById('setIsTestMode').checked = (s.is_test_mode === '1');
+
+        const box = document.getElementById('bankStatusNotice');
+        if (box) {
+          box.innerHTML = s.account_number === 'OCZEKUJE_NA_UZUPELNIENIE_W_PANELU'
+            ? '⚠️ <strong>Uwaga:</strong> Numer rachunku bankowego nie został jeszcze uzupełniony. Zamówienia składane przez klientów są obecnie w trybie roboczym.'
+            : '✅ <strong>Konto skonfigurowane:</strong> Klienci otrzymują powyższy numer rachunku i instrukcję przelewu.';
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function handleSaveSettings(e) {
+    e.preventDefault();
+    const btn = document.getElementById('saveSettingsBtn');
+    btn.disabled = true;
+
+    const payload = {
+      recipient_name: document.getElementById('setRecipientName').value,
+      recipient_address: document.getElementById('setRecipientAddr').value,
+      bank_name: document.getElementById('setBankName').value,
+      account_number: document.getElementById('setAccountNumber').value,
+      is_test_mode: document.getElementById('setIsTestMode').checked,
+      bank_configured: document.getElementById('setAccountNumber').value !== 'OCZEKUJE_NA_UZUPELNIENIE_W_PANELU'
+    };
+
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Dane bankowe zostały zaktualizowane!');
+        loadSettings();
+      } else {
+        alert(data.error || 'Błąd zapisu.');
+      }
+    } catch (err) {
+      alert('Błąd sieci.');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initAdmin);
+</script>

@@ -1,0 +1,295 @@
+---
+import { siteConfig } from '../content/site';
+const photos = siteConfig.galleryPhotos;
+---
+
+<section class="gallery-section" id="galeria">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Prawdziwy Vibe Stawów Stefańskiego</span>
+      <h2 class="section-title">Galeria Wake & Roll Park</h2>
+      <p class="section-desc">
+        Autentyczne kadry z wody, pomostu startowego i plaży. Zero zdjęć stockowych – to nasze codzienne lato w Łodzi!
+      </p>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      {photos.map((photo, index) => (
+        <a 
+          href={photo.src} 
+          class="gallery-item" 
+          data-index={index}
+          aria-label={`Powiększ zdjęcie: ${photo.alt}`}
+        >
+          <img 
+            src={photo.src} 
+            alt={photo.alt} 
+            loading="lazy" 
+            class="gallery-thumb"
+            width="600"
+            height="400"
+          />
+          <div class="gallery-overlay">
+            <i class="fa-solid fa-expand" aria-hidden="true"></i>
+            <span class="gallery-caption">{photo.alt}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightboxModal" aria-hidden="true" role="dialog">
+    <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Zamknij podgląd">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Poprzednie zdjęcie">
+      <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+    </button>
+    <div class="lightbox-content">
+      <img src="" alt="" id="lightboxImg" class="lightbox-img" />
+      <p id="lightboxCaption" class="lightbox-caption-text"></p>
+    </div>
+    <button type="button" class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Następne zdjęcie">
+      <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    </button>
+  </div>
+</section>
+
+<style>
+  .gallery-section {
+    padding: 80px 0;
+    background: linear-gradient(180deg, #060a12 0%, #080f1d 50%, #060a12 100%);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    display: block;
+    background: #0d1527;
+    border: 1px solid var(--color-border);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-primary);
+  }
+
+  .gallery-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .gallery-item:hover .gallery-thumb {
+    transform: scale(1.05);
+  }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(6, 10, 18, 0.9) 100%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 16px;
+  }
+
+  .gallery-item:hover .gallery-overlay {
+    opacity: 1;
+  }
+
+  .gallery-overlay i {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    color: var(--color-primary);
+    font-size: 1.1rem;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px;
+    border-radius: 50%;
+  }
+
+  .gallery-caption {
+    font-size: 0.8rem;
+    color: #fff;
+    line-height: 1.4;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Lightbox */
+  .lightbox-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s, visibility 0.25s;
+    padding: 24px;
+  }
+
+  .lightbox-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2010;
+  }
+
+  .lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2010;
+  }
+
+  .lightbox-prev { left: 24px; }
+  .lightbox-next { right: 24px; }
+
+  @media (max-width: 600px) {
+    .lightbox-prev { left: 8px; }
+    .lightbox-next { right: 8px; }
+  }
+
+  .lightbox-content {
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lightbox-img {
+    max-width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  }
+
+  .lightbox-caption-text {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    margin-top: 14px;
+    text-align: center;
+    max-width: 600px;
+  }
+</style>
+
+<script>
+  function initGallery() {
+    const items = Array.from(document.querySelectorAll('.gallery-item'));
+    const modal = document.getElementById('lightboxModal');
+    const img = document.getElementById('lightboxImg');
+    const caption = document.getElementById('lightboxCaption');
+    const closeBtn = document.getElementById('lightboxClose');
+    const prevBtn = document.getElementById('lightboxPrev');
+    const nextBtn = document.getElementById('lightboxNext');
+
+    if (!items.length || !modal) return;
+
+    let currentIndex = 0;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      const target = items[currentIndex];
+      const src = target.getAttribute('href');
+      const text = target.querySelector('.gallery-thumb')?.getAttribute('alt');
+
+      img.setAttribute('src', src);
+      img.setAttribute('alt', text);
+      caption.textContent = text;
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function prevPhoto() {
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      openLightbox(currentIndex);
+    }
+
+    function nextPhoto() {
+      currentIndex = (currentIndex + 1) % items.length;
+      openLightbox(currentIndex);
+    }
+
+    items.forEach((item, idx) => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLightbox(idx);
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeLightbox);
+    prevBtn?.addEventListener('click', prevPhoto);
+    nextBtn?.addEventListener('click', nextPhoto);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!modal.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevPhoto();
+      if (e.key === 'ArrowRight') nextPhoto();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initGallery);
+</script>

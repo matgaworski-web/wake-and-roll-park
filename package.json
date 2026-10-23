@@ -1,0 +1,21 @@
+{
+  "name": "wakeandrollpark",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "server:start": "node server/src/index.js",
+    "dev:all": "concurrently \"npm run server:start\" \"npm run dev\""
+  },
+  "dependencies": {
+    "astro": "^5.4.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.7.3"
+  }
+}

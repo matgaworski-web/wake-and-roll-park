@@ -1,0 +1,153 @@
+---
+import { siteConfig } from '../content/site';
+const guide = siteConfig.beginnersGuide;
+---
+
+<section class="beginners-section" id="poczatkujacy">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Pierwszy Raz na Wyciągu?</span>
+      <h2 class="section-title">Wszystko, Co Musisz Wiedzieć na Start</h2>
+      <p class="section-desc">
+        Nie musisz mieć żadnego doświadczenia ze sportami deskowymi. Wyciąg dwusłupowy 2.0 to najbezpieczniejszy i najprostszy sposób na naukę wakeboardu na świecie.
+      </p>
+    </div>
+
+    <!-- 4 Kroki pierwszej sesji -->
+    <div class="steps-grid">
+      {guide.steps.map(step => (
+        <div class="step-card">
+          <span class="step-num">{step.num}</span>
+          <h3 class="step-title">{step.title}</h3>
+          <p class="step-desc">{step.desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Co zabrać ze sobą -->
+    <div class="bring-box">
+      <div class="bring-header">
+        <i class="fa-solid fa-suitcase" aria-hidden="true"></i>
+        <div>
+          <h3 class="bring-title">Co należy zabrać ze sobą na obiekt:</h3>
+          <p class="bring-desc">Resztę sprzętu (kamizelkę, kask, deskę) otrzymasz na miejscu!</p>
+        </div>
+      </div>
+      <ul class="bring-list">
+        {guide.whatToBring.map(item => (
+          <li>
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .beginners-section {
+    padding: 80px 0;
+    background: #060a12;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .step-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    position: relative;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .step-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 242, 254, 0.4);
+  }
+
+  .step-num {
+    font-size: 2.4rem;
+    font-weight: 900;
+    font-family: var(--font-display);
+    color: rgba(0, 242, 254, 0.25);
+    display: block;
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+
+  .step-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .step-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .bring-box {
+    background: linear-gradient(135deg, rgba(16, 28, 52, 0.7) 0%, rgba(10, 18, 34, 0.7) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 36px 32px;
+  }
+
+  .bring-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .bring-header i {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    background: rgba(0, 242, 254, 0.1);
+    padding: 14px;
+    border-radius: var(--radius-md);
+  }
+
+  .bring-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .bring-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .bring-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+
+  .bring-list li {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+  }
+
+  .bring-list li i {
+    color: var(--color-primary);
+  }
+</style>

@@ -1,0 +1,211 @@
+---
+import { siteConfig } from '../content/site';
+const plans = siteConfig.pricing;
+---
+
+<section class="pricing-section" id="cennik">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Przejrzyste Zasady</span>
+      <h2 class="section-title">Oficjalny Cennik Usług</h2>
+      <p class="section-desc">
+        Pływanie na wyciągu 2.0 (max 4 osoby na godzinę), wynajem wyciągu na wyłączność oraz deski SUP.
+        Kamizelka asekuracyjna i kask są zawsze w cenie każdej sesji!
+      </p>
+    </div>
+
+    <div class="pricing-grid">
+      {plans.map(plan => (
+        <div class={`pricing-card ${plan.isPopular ? 'is-popular' : ''}`}>
+          {plan.isPopular && <span class="badge badge-sunset popular-badge">Najpopularniejszy</span>}
+          
+          <div class="pricing-card-header">
+            <h3 class="plan-title">{plan.title}</h3>
+            <span class="plan-duration">{plan.duration}</span>
+          </div>
+
+          <div class="price-figures">
+            {plan.priceWeek !== '—' && (
+              <div class="price-row">
+                <span class="label">Poniedziałek – Piątek:</span>
+                <strong class="val">{plan.priceWeek}</strong>
+              </div>
+            )}
+            {plan.priceWeekend !== '—' && (
+              <div class="price-row">
+                <span class="label">Sobota – Niedziela:</span>
+                <strong class="val">{plan.priceWeekend}</strong>
+              </div>
+            )}
+            <div class="equipment-chip">
+              <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+              <span>{plan.equipmentInfo}</span>
+            </div>
+          </div>
+
+          <ul class="features-list">
+            {plan.features.map(f => (
+              <li><i class="fa-solid fa-check" aria-hidden="true"></i> <span>{f}</span></li>
+            ))}
+          </ul>
+
+          <a href="#rezerwacja" class={`btn ${plan.isPopular ? 'btn-primary' : 'btn-secondary'} plan-cta`}>
+            <span>Zarezerwuj Termin</span>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <div class="pricing-bottom-note">
+      <p>
+        <i class="fa-solid fa-shield-heart" aria-hidden="true"></i>
+        <strong>Bezpieczeństwo przede wszystkim:</strong> Każda sesja na wyciągu objęta jest nadzorem instruktora i ratownika wodnego.
+        Pianki neoprenowe w chłodniejsze dni dostępne w wypożyczalni (+10 zł/h).
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing-section {
+    padding: 80px 0;
+    background: linear-gradient(180deg, #060a12 0%, #0a1120 50%, #060a12 100%);
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-bottom: 36px;
+  }
+
+  .pricing-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 242, 254, 0.4);
+  }
+
+  .pricing-card.is-popular {
+    border-color: var(--color-primary);
+    background: linear-gradient(180deg, rgba(16, 28, 52, 0.95) 0%, rgba(12, 20, 36, 0.95) 100%);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .plan-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .plan-duration {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    display: block;
+  }
+
+  .price-figures {
+    margin: 20px 0;
+    padding: 16px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .price-row .label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .price-row .val {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+  }
+
+  .equipment-chip {
+    background: rgba(0, 242, 254, 0.08);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 0.775rem;
+    color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .equipment-chip i {
+    color: var(--color-primary);
+  }
+
+  .features-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .features-list li {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .features-list li i {
+    color: var(--color-primary);
+    margin-top: 3px;
+  }
+
+  .plan-cta {
+    width: 100%;
+    text-align: center;
+  }
+
+  .pricing-bottom-note {
+    background: rgba(12, 20, 36, 0.6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 18px 24px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .pricing-bottom-note strong {
+    color: #fff;
+  }
+
+  .pricing-bottom-note i {
+    color: var(--color-accent-sunset);
+    margin-right: 6px;
+  }
+</style>

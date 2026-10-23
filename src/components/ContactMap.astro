@@ -1,0 +1,245 @@
+---
+import { siteConfig } from '../content/site';
+const c = siteConfig.contact;
+const h = siteConfig.openingHours;
+---
+
+<section class="contact-section" id="kontakt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Stawy Stefańskiego • Łódź</span>
+      <h2 class="section-title">Odwiedź Nas i Skontaktuj Się</h2>
+      <p class="section-desc">
+        Łatwy dojazd, bezpłatny parking na miejscu i najlepsza letnia atmosfera w Łodzi.
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- Dane kontaktowe -->
+      <div class="contact-card">
+        <h3 class="card-headline">Informacje i Rezerwacje</h3>
+
+        <div class="contact-list">
+          <div class="contact-item">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <div>
+              <strong class="item-label">Adres obiektu:</strong>
+              <p class="item-val">{c.address.street}</p>
+              <small class="item-sub">{c.address.postalCode} {c.address.city} ({c.address.district})</small>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <i class="fa-solid fa-phone" aria-hidden="true"></i>
+            <div>
+              <strong class="item-label">Telefon do wakeparku:</strong>
+              <p class="item-val"><a href={`tel:${c.phones.park}`}>{c.phones.park}</a></p>
+              <small class="item-sub">Rezerwacje wyciągu, SUP i stoisko na molo</small>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <i class="fa-solid fa-headset" aria-hidden="true"></i>
+            <div>
+              <strong class="item-label">Półkolonie WakeWakacje:</strong>
+              <p class="item-val"><a href={`tel:${c.phones.camps}`}>{c.phones.camps}</a></p>
+              <small class="item-sub">Zapisy dzieci i infolinia obozów (Pn-Pt 8:00–18:00)</small>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            <div>
+              <strong class="item-label">Adres e-mail:</strong>
+              <p class="item-val"><a href={`mailto:${c.emails.main}`}>{c.emails.main}</a></p>
+              <small class="item-sub">Obsługa klienta i rezerwacje grupowe</small>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+            <div>
+              <strong class="item-label">Godziny otwarcia w sezonie:</strong>
+              <p class="item-val">Poniedziałek – Piątek: {h.weekdays}</p>
+              <p class="item-val">Sobota – Niedziela: {h.weekends}</p>
+              <small class="item-sub">{h.notice}</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dane spółki -->
+        <div class="legal-box">
+          <strong class="legal-title">Dane Rejestrowe:</strong>
+          <p>{siteConfig.legalName}</p>
+          <p>NIP: <strong>{c.nip}</strong> • REGON: <strong>{c.regon}</strong></p>
+        </div>
+      </div>
+
+      <!-- Mapa dojazdu i wskazówki -->
+      <div class="map-card">
+        <div class="map-frame-wrapper">
+          <iframe 
+            title="Lokalizacja Wake and Roll Park Łódź"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9894.204561027157!2d19.444855914902128!3d51.708233379685955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471a3501a35bfd37%3A0xe54d6fa7c207b538!2sWake%20%26%20Roll%20Park!5e0!3m2!1spl!2spl!4v1700000000000!5m2!1spl!2spl" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div class="directions-hint">
+          <i class="fa-solid fa-car" aria-hidden="true"></i>
+          <div>
+            <strong>Dojazd i Parking:</strong>
+            <p>Wjazd od ul. Patriotycznej lub ul. Rudzkiej. Na terenie Parku 1 Maja przy Stawach Stefańskiego znajduje się bezpłatny parking dla gości parku.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-section {
+    padding: 80px 0;
+    background: linear-gradient(180deg, #060a12 0%, #0a1120 50%, #060a12 100%);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .contact-card, .map-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-headline {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 24px;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .contact-item i {
+    font-size: 1.25rem;
+    color: var(--color-primary);
+    background: rgba(0, 242, 254, 0.1);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    margin-top: 2px;
+  }
+
+  .item-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .item-val {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .item-val a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .item-val a:hover {
+    color: var(--color-primary);
+  }
+
+  .item-sub {
+    font-size: 0.775rem;
+    color: var(--color-text-muted);
+    display: block;
+    margin-top: 2px;
+  }
+
+  .legal-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 0.8rem;
+    color: var(--color-text-dim);
+  }
+
+  .legal-title {
+    color: #cbd5e1;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .legal-box strong {
+    color: #e2e8f0;
+  }
+
+  /* Mapa */
+  .map-frame-wrapper {
+    width: 100%;
+    height: 360px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    margin-bottom: 20px;
+  }
+
+  .directions-hint {
+    background: rgba(0, 242, 254, 0.06);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .directions-hint i {
+    font-size: 1.4rem;
+    color: var(--color-primary);
+  }
+
+  .directions-hint strong {
+    color: #fff;
+    display: block;
+    margin-bottom: 2px;
+  }
+</style>

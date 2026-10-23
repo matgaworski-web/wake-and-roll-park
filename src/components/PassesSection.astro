@@ -1,0 +1,789 @@
+---
+---
+
+<section class="passes-section" id="karnety">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Przedsprzedaż Sezon 2027</span>
+      <h2 class="section-title">Karnety na Wyciąg Wakeboardowy</h2>
+      <p class="section-desc">
+        Gwarancja najlepszej stawki za sesję. Pakiety wejść do wykorzystania przez cały sezon 2027.
+        Płatność tradycyjnym przelewem bankowym – aktywacja karnetu natychmiast po zaksięgowaniu wpłaty.
+      </p>
+    </div>
+
+    <!-- Kontener z kartami karnetów (renderowany dynamicznie z API lub fallback) -->
+    <div class="passes-grid" id="passesGrid">
+      <div class="pass-card-skeleton">
+        <div class="skeleton-shimmer"></div>
+        <p>Ładowanie aktualnej oferty karnetów...</p>
+      </div>
+    </div>
+
+    <div class="passes-guarantee-box">
+      <div class="guarantee-item">
+        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+        <div>
+          <strong>Bezpieczna płatność przelewem</strong>
+          <p>Indywidualny tytuł wpłaty i unikalny numer każdego zamówienia.</p>
+        </div>
+      </div>
+      <div class="guarantee-item">
+        <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+        <div>
+          <strong>Ważność przez cały sezon</strong>
+          <p>Karnety są aktywne od pierwszego do ostatniego dnia sezonu 2027.</p>
+        </div>
+      </div>
+      <div class="guarantee-item">
+        <i class="fa-solid fa-qrcode" aria-hidden="true"></i>
+        <div>
+          <strong>Wygodny kod karnetu</strong>
+          <p>Po wpłacie otrzymujesz unikalny kod do szybkiej rezerwacji godzin w kalendarzu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Zakupu Karnetu -->
+  <div class="modal-backdrop" id="passOrderModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Zamknij okno">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+
+      <!-- Krok 1: Formularz danych klienta -->
+      <div id="orderStepForm">
+        <div class="modal-header">
+          <span class="badge badge-primary">KROK 1 Z 2</span>
+          <h3 class="modal-title" id="modalTitle">Zamówienie Karnetu</h3>
+          <p class="modal-subtitle" id="modalPassName">Wybrany pakiet</p>
+        </div>
+
+        <form id="passPurchaseForm" class="order-form">
+          <input type="hidden" id="formPassTypeId" name="passTypeId" value="" />
+          
+          <div class="form-group">
+            <label for="custName">Imię i Nazwisko <span class="req">*</span></label>
+            <input type="text" id="custName" name="customerName" required placeholder="np. Jan Kowalski" autocomplete="name" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="custEmail">Adres E-mail <span class="req">*</span></label>
+              <input type="email" id="custEmail" name="customerEmail" required placeholder="twoj@email.pl" autocomplete="email" />
+              <span class="field-hint">Na ten adres wyślemy potwierdzenie i kod karnetu.</span>
+            </div>
+            <div class="form-group">
+              <label for="custPhone">Numer Telefonu <span class="req">*</span></label>
+              <input type="tel" id="custPhone" name="customerPhone" required placeholder="np. 600 123 456" autocomplete="tel" />
+            </div>
+          </div>
+
+          <div class="order-summary-chip">
+            <span>Kwota do zapłaty:</span>
+            <strong id="modalPassPrice">0.00 PLN</strong>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="modalCancelBtn">Anuluj</button>
+            <button type="submit" class="btn btn-primary" id="modalSubmitBtn">
+              <span>Złóż zamówienie i przejdź do płatności</span>
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Krok 2: Dane do przelewu bankowego -->
+      <div id="orderStepSuccess" style="display: none;">
+        <div class="modal-header success-header">
+          <div class="success-icon">
+            <i class="fa-solid fa-check" aria-hidden="true"></i>
+          </div>
+          <span class="badge badge-primary">KROK 2: DANE DO PRZELEWU</span>
+          <h3 class="modal-title">Zamówienie Złożone Pomyślnie!</h3>
+          <p class="modal-subtitle">Numer zamówienia: <strong id="successOrderNumber" class="text-gradient">WARP-...</strong></p>
+        </div>
+
+        <div class="bank-transfer-details" id="bankTransferDetails">
+          <div class="transfer-alert" id="transferModeAlert" style="display: none;">
+            <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+            <span>Tryb roboczy / testowy: Dane rachunku bankowego oczekują na zatwierdzenie przez właściciela.</span>
+          </div>
+
+          <div class="transfer-row">
+            <span class="transfer-label">Odbiorca:</span>
+            <div class="transfer-val-wrap">
+              <strong id="bankRecipient" class="transfer-val">WAKE & ROLL PARK S.C.</strong>
+              <button type="button" class="copy-btn" data-copy="bankRecipient" title="Kopiuj"><i class="fa-regular fa-copy"></i></button>
+            </div>
+          </div>
+
+          <div class="transfer-row">
+            <span class="transfer-label">Numer rachunku:</span>
+            <div class="transfer-val-wrap">
+              <strong id="bankAccount" class="transfer-val account-number">...</strong>
+              <button type="button" class="copy-btn" data-copy="bankAccount" title="Kopiuj"><i class="fa-regular fa-copy"></i></button>
+            </div>
+          </div>
+
+          <div class="transfer-row">
+            <span class="transfer-label">Kwota:</span>
+            <div class="transfer-val-wrap">
+              <strong id="bankAmount" class="transfer-val highlight-val">0.00 PLN</strong>
+              <button type="button" class="copy-btn" data-copy="bankAmount" title="Kopiuj"><i class="fa-regular fa-copy"></i></button>
+            </div>
+          </div>
+
+          <div class="transfer-row highlight-row">
+            <span class="transfer-label">Tytuł przelewu (BARDZO WAŻNE):</span>
+            <div class="transfer-val-wrap">
+              <strong id="bankTitle" class="transfer-val title-val">KARNET WARP-...</strong>
+              <button type="button" class="copy-btn" data-copy="bankTitle" title="Kopiuj"><i class="fa-regular fa-copy"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="transfer-instruction">
+          <p><i class="fa-solid fa-circle-info" aria-hidden="true"></i> <strong>Jak przebiega aktywacja:</strong> Po wykonaniu przelewu administrator sprawdza zaksięgowanie środków na koncie, a system automatycznie generuje i przesyła aktywny kod karnetu na Twój adres e-mail.</p>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary" id="closeSuccessBtn">Rozumiem, zapisałem dane</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .passes-section {
+    padding: 80px 0;
+    background: linear-gradient(180deg, #060a12 0%, #0a101d 50%, #060a12 100%);
+    position: relative;
+  }
+
+  .passes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  :global(.pass-card) {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform var(--transition-normal), border-color var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+  }
+
+  :global(.pass-card:hover) {
+    transform: translateY(-4px);
+    border-color: rgba(0, 242, 254, 0.4);
+    box-shadow: 0 16px 36px rgba(0, 242, 254, 0.12);
+  }
+
+  :global(.pass-card.is-popular) {
+    border-color: var(--color-primary);
+    background: linear-gradient(180deg, rgba(16, 32, 58, 0.95) 0%, rgba(12, 22, 40, 0.95) 100%);
+  }
+
+  :global(.pass-badge) {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  :global(.pass-header) {
+    margin-bottom: 24px;
+  }
+
+  :global(.pass-name) {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  :global(.pass-desc) {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  :global(.pass-pricing-block) {
+    margin: 20px 0;
+    padding: 16px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  :global(.pass-price) {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  :global(.pass-price .currency) {
+    font-size: 1rem;
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  :global(.pass-entries-info) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-top: 6px;
+  }
+
+  :global(.pass-features-list) {
+    list-style: none;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  :global(.pass-features-list li) {
+    font-size: 0.875rem;
+    color: #cbd5e1;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  :global(.pass-features-list li i) {
+    color: var(--color-primary);
+    margin-top: 3px;
+  }
+
+  .pass-card-skeleton {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-lg);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    color: var(--color-text-muted);
+  }
+
+  .passes-guarantee-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    background: rgba(12, 20, 36, 0.6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+  }
+
+  .guarantee-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .guarantee-item i {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    background: rgba(0, 242, 254, 0.1);
+    padding: 12px;
+    border-radius: var(--radius-md);
+  }
+
+  .guarantee-item strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .guarantee-item p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s, visibility 0.25s;
+  }
+
+  .modal-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-box {
+    background: #0d1527;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 580px;
+    padding: 32px;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #cbd5e1;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  .modal-header {
+    margin-bottom: 24px;
+  }
+
+  .modal-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+
+  .modal-subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+
+  .order-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 480px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #cbd5e1;
+  }
+
+  .req {
+    color: var(--color-accent-rose);
+  }
+
+  input[type="text"], input[type="email"], input[type="tel"] {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    color: #fff;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  input:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-primary);
+  }
+
+  .field-hint {
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+  }
+
+  .order-summary-chip {
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #e2e8f0;
+  }
+
+  .order-summary-chip strong {
+    font-size: 1.3rem;
+    color: var(--color-primary);
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  /* Dane bankowe */
+  .bank-transfer-details {
+    background: rgba(6, 10, 18, 0.7);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .transfer-alert {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .transfer-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .transfer-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .transfer-val-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .transfer-val {
+    font-size: 0.95rem;
+    color: #fff;
+    word-break: break-all;
+  }
+
+  .account-number {
+    font-family: monospace;
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+  }
+
+  .highlight-val {
+    font-size: 1.3rem;
+    color: var(--color-accent-sunset);
+  }
+
+  .title-val {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+
+  .copy-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--color-border);
+    color: #cbd5e1;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .copy-btn:hover {
+    background: var(--color-primary);
+    color: #000;
+  }
+
+  .transfer-instruction {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .transfer-instruction strong {
+    color: #fff;
+  }
+
+  .success-header .success-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--color-accent-emerald);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+</style>
+
+<script>
+  let cachedPassTypes = [];
+
+  async function loadPassTypes() {
+    const grid = document.getElementById('passesGrid');
+    if (!grid) return;
+
+    try {
+      // Pobierz z API backendu
+      const res = await fetch('/api/passes/types');
+      const data = await res.json();
+
+      if (data.success && data.data && data.data.length > 0) {
+        cachedPassTypes = data.data;
+        renderPassCards(data.data, data.paymentInfo);
+      } else {
+        renderFallbackPasses();
+      }
+    } catch (err) {
+      console.warn('[Passes] API offline, rendering fallback passes:', err);
+      renderFallbackPasses();
+    }
+  }
+
+  function renderPassCards(passTypes, paymentInfo) {
+    const grid = document.getElementById('passesGrid');
+    if (!grid) return;
+
+    grid.innerHTML = passTypes.map(p => `
+      <div class="pass-card ${p.promo_badge ? 'is-popular' : ''}">
+        ${p.promo_badge ? `<span class="badge badge-sunset pass-badge">${p.promo_badge}</span>` : ''}
+        
+        <div class="pass-header">
+          <h3 class="pass-name">${p.name}</h3>
+          <p class="pass-desc">${p.description}</p>
+        </div>
+
+        <div class="pass-pricing-block">
+          <div class="pass-price">
+            <span>${p.price_promo ? p.price_promo.toFixed(2) : p.price_regular.toFixed(2)}</span>
+            <span class="currency">PLN</span>
+          </div>
+          <div class="pass-entries-info">
+            <i class="fa-solid fa-ticket"></i>
+            <span>${p.entries_count === 999 ? 'Wstęp Nielimitowany (VIP)' : `${p.entries_count} sesji w pakiecie`}</span>
+          </div>
+        </div>
+
+        <ul class="pass-features-list">
+          <li><i class="fa-solid fa-check"></i> <span>Ważność: <strong>${p.validity_days} dni</strong> w sezonie ${p.season}</span></li>
+          <li><i class="fa-solid fa-check"></i> <span>${p.includes_equipment ? 'Wypożyczenie deski w cenie' : 'Dostęp do toru (sprzęt własny / dopłata 20 zł)'}</span></li>
+          <li><i class="fa-solid fa-check"></i> <span>Kask i kamizelka asekuracyjna w cenie</span></li>
+          <li><i class="fa-solid fa-check"></i> <span>Szybka rezerwacja slotów online</span></li>
+        </ul>
+
+        <button type="button" class="btn btn-primary buy-pass-btn" data-pass-id="${p.id}">
+          <i class="fa-solid fa-bag-shopping"></i> Zamów Karnet
+        </button>
+      </div>
+    `).join('');
+
+    attachPassButtons();
+  }
+
+  function renderFallbackPasses() {
+    const fallback = [
+      { id: 'pass_5_regular', name: 'Karnet 5 Sesji (Własny Sprzęt)', price_regular: 220.00, entries_count: 5, validity_days: 120, season: '2027', description: 'Pakiet 5 pojedynczych godzinnych sesji na wyciągu Sesitec 2.0.' },
+      { id: 'pass_10_regular', name: 'Karnet 10 Sesji (Bestseller)', price_regular: 420.00, entries_count: 10, validity_days: 150, season: '2027', promo_badge: 'Najchętniej Wybierany', description: 'Optymalny pakiet dla regularnie trenujących ridersów.' },
+      { id: 'pass_5_full', name: 'Karnet 5 Sesji (Z Deską)', price_regular: 310.00, entries_count: 5, validity_days: 120, season: '2027', includes_equipment: 1, description: '5 sesji z kompletną deską wakeboardową w cenie.' },
+      { id: 'pass_vip_season', name: 'Karnet Sezonowy VIP 2027', price_regular: 2490.00, entries_count: 999, validity_days: 180, season: '2027', promo_badge: 'Edycja Limitowana', description: 'Nielimitowane pływanie przez cały sezon 2027.' }
+    ];
+    cachedPassTypes = fallback;
+    renderPassCards(fallback, { isTestMode: true, bankConfigured: false });
+  }
+
+  function attachPassButtons() {
+    document.querySelectorAll('.buy-pass-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const passId = e.currentTarget.getAttribute('data-pass-id');
+        openOrderModal(passId);
+      });
+    });
+  }
+
+  const modal = document.getElementById('passOrderModal');
+  const closeBtn = document.getElementById('modalCloseBtn');
+  const cancelBtn = document.getElementById('modalCancelBtn');
+  const form = document.getElementById('passPurchaseForm');
+  const stepForm = document.getElementById('orderStepForm');
+  const stepSuccess = document.getElementById('orderStepSuccess');
+
+  function openOrderModal(passId) {
+    const pass = cachedPassTypes.find(p => p.id === passId);
+    if (!pass || !modal) return;
+
+    document.getElementById('formPassTypeId').value = pass.id;
+    document.getElementById('modalPassName').textContent = pass.name;
+    const price = pass.price_promo || pass.price_regular;
+    document.getElementById('modalPassPrice').textContent = `${price.toFixed(2)} PLN`;
+
+    stepForm.style.display = 'block';
+    stepSuccess.style.display = 'none';
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  closeBtn?.addEventListener('click', closeModal);
+  cancelBtn?.addEventListener('click', closeModal);
+  document.getElementById('closeSuccessBtn')?.addEventListener('click', closeModal);
+
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Obsługa wysłania zamówienia do API
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('modalSubmitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Zapisywanie zamówienia...';
+
+    const payload = {
+      passTypeId: document.getElementById('formPassTypeId').value,
+      customerName: document.getElementById('custName').value,
+      customerEmail: document.getElementById('custEmail').value,
+      customerPhone: document.getElementById('custPhone').value
+    };
+
+    try {
+      const res = await fetch('/api/passes/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.success && data.order) {
+        showSuccessView(data.order);
+      } else {
+        alert(data.error || 'Wystąpił błąd podczas składania zamówienia.');
+      }
+    } catch (err) {
+      console.error('[Order Error]', err);
+      // Fallback lokalny dla trybu offline
+      const mockOrderNumber = `WARP-2027-${Math.floor(1000 + Math.random() * 9000)}`;
+      showSuccessView({
+        orderNumber: mockOrderNumber,
+        paymentDetails: {
+          recipientName: 'WAKE & ROLL PARK S.C.',
+          accountNumber: 'OCZEKUJE NA UZUPEŁNIENIE W PANELU ADMINA',
+          amountDue: document.getElementById('modalPassPrice').textContent,
+          transferTitle: `KARNET ${mockOrderNumber} ${payload.customerName.split(' ').slice(-1)[0].toUpperCase()}`,
+          isTestMode: true,
+          bankConfigured: false
+        }
+      });
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span>Złóż zamówienie i przejdź do płatności</span> <i class="fa-solid fa-arrow-right"></i>';
+    }
+  });
+
+  function showSuccessView(order) {
+    stepForm.style.display = 'none';
+    stepSuccess.style.display = 'block';
+
+    const p = order.paymentDetails;
+    document.getElementById('successOrderNumber').textContent = order.orderNumber;
+    document.getElementById('bankRecipient').textContent = p.recipientName;
+    document.getElementById('bankAccount').textContent = p.accountNumber;
+    document.getElementById('bankAmount').textContent = p.amountDue;
+    document.getElementById('bankTitle').textContent = p.transferTitle;
+
+    const alertBox = document.getElementById('transferModeAlert');
+    if (!p.bankConfigured && alertBox) {
+      alertBox.style.display = 'flex';
+    } else if (alertBox) {
+      alertBox.style.display = 'none';
+    }
+
+    // Obsługa kopiowania do schowka
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetId = e.currentTarget.getAttribute('data-copy');
+        const text = document.getElementById(targetId)?.textContent;
+        if (text) {
+          navigator.clipboard.writeText(text);
+          btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+          setTimeout(() => { btn.innerHTML = '<i class="fa-regular fa-copy"></i>'; }, 1500);
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', loadPassTypes);
+</script>

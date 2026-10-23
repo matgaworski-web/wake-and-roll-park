@@ -1,0 +1,289 @@
+---
+import { siteConfig } from '../content/site';
+---
+
+<header class="site-header" id="siteHeader">
+  <!-- Pasek informacyjny na samej górze -->
+  <div class="top-announcement-bar">
+    <div class="container top-bar-content">
+      <div class="top-status">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>Stawy Stefańskiego • Łódź</span>
+      </div>
+      <div class="top-contacts">
+        <a href={`tel:${siteConfig.contact.phones.park}`} class="top-phone">
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
+          <span>{siteConfig.contact.phones.park}</span>
+        </a>
+        <a href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" class="top-social" aria-label="Instagram">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a href={siteConfig.socials.facebook} target="_blank" rel="noopener noreferrer" class="top-social" aria-label="Facebook">
+          <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Główny pasek nawigacji -->
+  <div class="main-navbar">
+    <div class="container nav-content">
+      <a href="/" class="brand-link" aria-label="Wake and Roll Park Strona Główna">
+        <div class="brand-logo-icon">
+          <i class="fa-solid fa-water" aria-hidden="true"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">WAKE & ROLL</span>
+          <span class="brand-tagline">PARK ŁÓDŹ • STAWY STEFAŃSKIEGO</span>
+        </div>
+      </a>
+
+      <!-- Menu główne desktop -->
+      <nav class="nav-menu" id="navMenu" aria-label="Nawigacja główna">
+        <a href="#atrakcje" class="nav-link">Atrakcje</a>
+        <a href="#cennik" class="nav-link">Cennik</a>
+        <a href="#karnety" class="nav-link">Karnety 2027</a>
+        <a href="#poczatkujacy" class="nav-link">Dla Początkujących</a>
+        <a href="#galeria" class="nav-link">Galeria</a>
+        <a href="#polkolonie" class="nav-link camps-link">Półkolonie</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="#kontakt" class="nav-link">Kontakt</a>
+      </nav>
+
+      <!-- CTA i Mobile Hamburger -->
+      <div class="nav-actions">
+        <a href="#rezerwacja" class="btn btn-primary btn-sm nav-cta">
+          <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+          <span>Zarezerwuj Tor</span>
+        </a>
+
+        <button 
+          type="button" 
+          class="mobile-nav-toggle" 
+          id="mobileNavToggle" 
+          aria-label="Otwórz menu nawigacji"
+          aria-expanded="false" 
+          aria-controls="navMenu"
+        >
+          <i class="fa-solid fa-bars" id="hamburgerIcon" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    width: 100%;
+    background: rgba(6, 10, 18, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .top-announcement-bar {
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.775rem;
+    padding: 6px 0;
+    color: var(--color-text-muted);
+  }
+
+  .top-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .top-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent-emerald);
+    box-shadow: 0 0 8px var(--color-accent-emerald);
+  }
+
+  .top-contacts {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .top-phone {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+  }
+
+  .top-phone:hover {
+    color: var(--color-primary);
+  }
+
+  .top-social {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .top-social:hover {
+    color: var(--color-primary);
+  }
+
+  /* Main nav */
+  .main-navbar {
+    padding: 12px 0;
+  }
+
+  .nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #fff;
+  }
+
+  .brand-logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #00b4d8 100%);
+    color: #060a12;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0, 242, 254, 0.3);
+  }
+
+  .brand-name {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    display: block;
+    line-height: 1.1;
+  }
+
+  .brand-tagline {
+    font-size: 0.65rem;
+    color: var(--color-primary);
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    display: block;
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-link {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: color 0.2s;
+    padding: 6px 0;
+    position: relative;
+  }
+
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+
+  .camps-link {
+    color: var(--color-accent-sunset);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mobile-nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  @media (max-width: 980px) {
+    .nav-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #090e1a;
+      border-bottom: 1px solid var(--color-border);
+      flex-direction: column;
+      padding: 24px 20px;
+      gap: 16px;
+      align-items: flex-start;
+      display: none;
+    }
+
+    .nav-menu.is-open {
+      display: flex;
+    }
+
+    .mobile-nav-toggle {
+      display: block;
+    }
+
+    .nav-cta {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initHeader() {
+    const toggle = document.getElementById('mobileNavToggle');
+    const menu = document.getElementById('navMenu');
+    const icon = document.getElementById('hamburgerIcon');
+
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      if (icon) {
+        icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+      }
+    });
+
+    // Zwiń menu po kliknięciu w link
+    menu.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        if (icon) icon.className = 'fa-solid fa-bars';
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>

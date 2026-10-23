@@ -1,0 +1,496 @@
+---
+import { siteConfig } from '../content/site';
+const slides = siteConfig.heroSlides;
+---
+
+<section 
+  class="hero-carousel" 
+  role="region" 
+  aria-roledescription="karuzela" 
+  aria-label="Wyróżnione oferty Wake and Roll Park"
+  id="hero"
+>
+  <div class="carousel-viewport">
+    <div class="carousel-track" id="carouselTrack">
+      {slides.map((slide, index) => (
+        <article 
+          class={`carousel-slide ${index === 0 ? 'is-active' : ''}`}
+          role="group"
+          aria-roledescription="slajd"
+          aria-label={`${index + 1} z ${slides.length}: ${slide.highlightText}`}
+          id={`slide-${index}`}
+          aria-hidden={index !== 0}
+        >
+          <div class="slide-bg">
+            <img 
+              src={slide.image} 
+              alt={slide.imageAlt}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "auto"}
+              class="slide-img"
+              width="1920"
+              height="1080"
+            />
+            <div class="slide-overlay"></div>
+          </div>
+
+          <div class="container slide-content-wrapper">
+            <div class="slide-content">
+              <span class="badge badge-primary slide-badge">
+                <i class="fa-solid fa-bolt" aria-hidden="true"></i> {slide.badge}
+              </span>
+              
+              <h1 class="slide-title">
+                <span class="slide-title-sub">{slide.title}</span>
+                <span class="slide-title-main text-gradient">{slide.highlightText}</span>
+              </h1>
+
+              <p class="slide-desc">{slide.description}</p>
+
+              <div class="slide-actions">
+                <a href={slide.ctaLink} class="btn btn-primary btn-lg">
+                  <span>{slide.ctaText}</span>
+                  <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </a>
+                {slide.secondaryCtaText && (
+                  <a href={slide.secondaryCtaLink} class="btn btn-secondary btn-lg">
+                    <span>{slide.secondaryCtaText}</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- Pasek sterowania karuzelą -->
+  <div class="carousel-controls-bar container">
+    <div class="carousel-nav">
+      <button 
+        type="button" 
+        class="carousel-btn prev-btn" 
+        id="carouselPrev" 
+        aria-label="Poprzedni slajd"
+        title="Poprzedni slajd"
+      >
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+      </button>
+
+      <div class="carousel-dots" role="tablist" aria-label="Wybierz slajd">
+        {slides.map((slide, index) => (
+          <button 
+            type="button" 
+            role="tab" 
+            class={`dot-btn ${index === 0 ? 'is-active' : ''}`}
+            aria-selected={index === 0}
+            aria-controls={`slide-${index}`}
+            aria-label={`Przejdź do slajdu ${index + 1}: ${slide.highlightText}`}
+            data-index={index}
+          ></button>
+        ))}
+      </div>
+
+      <button 
+        type="button" 
+        class="carousel-btn next-btn" 
+        id="carouselNext" 
+        aria-label="Następny slajd"
+        title="Następny slajd"
+      >
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+      </button>
+
+      <!-- Przycisk zatrzymania autoodtwarzania (dostępność WCAG 2.2.2) -->
+      <button 
+        type="button" 
+        class="carousel-pause-btn" 
+        id="carouselPause" 
+        aria-label="Zatrzymaj automatyczną zmianę slajdów"
+        aria-pressed="false"
+        title="Zatrzymaj autoodtwarzanie"
+      >
+        <i class="fa-solid fa-pause" id="pauseIcon" aria-hidden="true"></i>
+        <span class="pause-text" id="pauseText">Zatrzymaj</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-carousel {
+    position: relative;
+    width: 100%;
+    min-height: min(85vh, 760px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    background-color: #060a12;
+  }
+
+  .carousel-viewport {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .carousel-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .carousel-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease-in-out, visibility 0.6s;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .carousel-slide.is-active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+  }
+
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slide-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    transform: scale(1.02);
+    transition: transform 8s ease-out;
+  }
+
+  .carousel-slide.is-active .slide-img {
+    transform: scale(1);
+  }
+
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(6, 10, 18, 0.45) 0%,
+      rgba(6, 10, 18, 0.7) 50%,
+      rgba(6, 10, 18, 0.95) 100%
+    );
+  }
+
+  .slide-content-wrapper {
+    position: relative;
+    z-index: 10;
+    padding-top: 100px;
+    padding-bottom: 90px;
+  }
+
+  .slide-content {
+    max-width: 680px;
+  }
+
+  .slide-badge {
+    margin-bottom: 16px;
+    font-size: 0.8rem;
+  }
+
+  .slide-title {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .slide-title-sub {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    color: #e2e8f0;
+  }
+
+  .slide-title-main {
+    font-size: clamp(2rem, 5.5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .slide-desc {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 580px;
+  }
+
+  .slide-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .btn-lg {
+    padding: 14px 28px;
+    font-size: 1.05rem;
+  }
+
+  /* Pasek kontrolny na dole */
+  .carousel-controls-bar {
+    position: relative;
+    z-index: 20;
+    padding-bottom: 28px;
+  }
+
+  .carousel-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(10, 18, 34, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+  }
+
+  .carousel-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .carousel-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--color-primary);
+  }
+
+  .carousel-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    cursor: pointer;
+    transition: width 0.3s ease, background 0.2s;
+    padding: 0;
+  }
+
+  .dot-btn.is-active {
+    width: 28px;
+    border-radius: 6px;
+    background: var(--color-primary);
+  }
+
+  .carousel-pause-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .carousel-pause-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  @media (max-width: 640px) {
+    .hero-carousel {
+      min-height: 80vh;
+    }
+    .slide-content-wrapper {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    .slide-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    .slide-actions .btn {
+      width: 100%;
+      text-align: center;
+    }
+    .carousel-controls-bar {
+      padding-bottom: 16px;
+    }
+    .pause-text {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide-img {
+      transition: none !important;
+      transform: none !important;
+    }
+    .carousel-slide {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  function initCarousel() {
+    const track = document.getElementById('carouselTrack');
+    if (!track) return;
+
+    const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    const dots = Array.from(document.querySelectorAll('.dot-btn'));
+    const pauseBtn = document.getElementById('carouselPause');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const pauseText = document.getElementById('pauseText');
+
+    let currentIndex = 0;
+    let isPaused = false;
+    let autoPlayTimer = null;
+    const intervalMs = 6000;
+
+    // Sprawdź czy użytkownik preferuje zredukowany ruch
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function goToSlide(index) {
+      if (index < 0) index = slides.length - 1;
+      if (index >= slides.length) index = 0;
+
+      slides[currentIndex].classList.remove('is-active');
+      slides[currentIndex].setAttribute('aria-hidden', 'true');
+      if (dots[currentIndex]) {
+        dots[currentIndex].classList.remove('is-active');
+        dots[currentIndex].setAttribute('aria-selected', 'false');
+      }
+
+      currentIndex = index;
+
+      slides[currentIndex].classList.add('is-active');
+      slides[currentIndex].setAttribute('aria-hidden', 'false');
+      if (dots[currentIndex]) {
+        dots[currentIndex].classList.add('is-active');
+        dots[currentIndex].setAttribute('aria-selected', 'true');
+      }
+    }
+
+    function nextSlide() { goToSlide(currentIndex + 1); }
+    function prevSlide() { goToSlide(currentIndex - 1); }
+
+    function startAutoPlay() {
+      if (prefersReducedMotion || isPaused) return;
+      stopAutoPlay();
+      autoPlayTimer = setInterval(nextSlide, intervalMs);
+    }
+
+    function stopAutoPlay() {
+      if (autoPlayTimer) {
+        clearInterval(autoPlayTimer);
+        autoPlayTimer = null;
+      }
+    }
+
+    function togglePause() {
+      isPaused = !isPaused;
+      if (isPaused) {
+        stopAutoPlay();
+        if (pauseIcon) pauseIcon.className = 'fa-solid fa-play';
+        if (pauseText) pauseText.textContent = 'Wznów';
+        pauseBtn?.setAttribute('aria-pressed', 'true');
+      } else {
+        startAutoPlay();
+        if (pauseIcon) pauseIcon.className = 'fa-solid fa-pause';
+        if (pauseText) pauseText.textContent = 'Zatrzymaj';
+        pauseBtn?.setAttribute('aria-pressed', 'false');
+      }
+    }
+
+    // Obsługa zdarzeń
+    prevBtn?.addEventListener('click', () => { prevSlide(); startAutoPlay(); });
+    nextBtn?.addEventListener('click', () => { nextSlide(); startAutoPlay(); });
+    pauseBtn?.addEventListener('click', togglePause);
+
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        goToSlide(idx);
+        startAutoPlay();
+      });
+    });
+
+    // Sterowanie klawiaturą (W3C a11y)
+    track.parentElement?.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { prevSlide(); startAutoPlay(); }
+      else if (e.key === 'ArrowRight') { nextSlide(); startAutoPlay(); }
+      else if (e.key === 'Home') { goToSlide(0); startAutoPlay(); }
+      else if (e.key === 'End') { goToSlide(slides.length - 1); startAutoPlay(); }
+    });
+
+    // Obsługa dotyku (Swipe na telefonie)
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    track.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      if (Math.abs(swipeDistance) > 40) {
+        if (swipeDistance < 0) nextSlide();
+        else prevSlide();
+        startAutoPlay();
+      }
+    }
+
+    // Wstrzymaj przy najechaniu myszką (dla wygody czytania)
+    track.parentElement?.addEventListener('mouseenter', stopAutoPlay);
+    track.parentElement?.addEventListener('mouseleave', () => {
+      if (!isPaused) startAutoPlay();
+    });
+
+    // Start
+    if (!prefersReducedMotion) {
+      startAutoPlay();
+    }
+  }
+
+  // Inicjalizacja przy załadowaniu i przy przejściach Astro View Transitions
+  document.addEventListener('DOMContentLoaded', initCarousel);
+</script>

@@ -1,0 +1,123 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { siteConfig } from '../content/site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = `${siteConfig.name} Łódź | Stawy Stefańskiego • Wyciąg 2.0 & Beach Bar`,
+  description = siteConfig.metaDescription,
+  canonicalUrl = 'https://wakeandrollpark.pl',
+  noindex = false
+} = Astro.props;
+
+// Schema.org JSON-LD (SportsActivityLocation / LocalBusiness)
+const schemaJson = {
+  "@context": "https://schema.org",
+  "@type": "SportsActivityLocation",
+  "name": "Wake & Roll Park Łódź",
+  "legalName": siteConfig.legalName,
+  "description": siteConfig.shortDescription,
+  "url": "https://wakeandrollpark.pl",
+  "telephone": siteConfig.contact.phones.park,
+  "email": siteConfig.contact.emails.main,
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": siteConfig.contact.address.street,
+    "addressLocality": siteConfig.contact.address.city,
+    "postalCode": siteConfig.contact.address.postalCode,
+    "addressCountry": "PL"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": siteConfig.contact.address.coordinates.lat,
+    "longitude": siteConfig.contact.address.coordinates.lng
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "12:00",
+      "closes": "21:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday", "Sunday"],
+      "opens": "11:00",
+      "closes": "21:00"
+    }
+  ],
+  "sameAs": [
+    siteConfig.socials.facebook,
+    siteConfig.socials.instagram,
+    siteConfig.socials.wakeCampsUrl
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="author" content={siteConfig.founders} />
+  
+  {noindex ? (
+    <meta name="robots" content="noindex, nofollow" />
+  ) : (
+    <meta name="robots" content="index, follow" />
+  )}
+  
+  <link rel="canonical" href={canonicalUrl} />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="https://wakeandrollpark.pl/images/park/2P0A4949.jpg" />
+  <meta property="og:locale" content="pl_PL" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content="https://wakeandrollpark.pl/images/park/2P0A4949.jpg" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  
+  <!-- Font Awesome Icons -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" 
+  />
+
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(schemaJson)} />
+</head>
+<body>
+  <a href="#glowna-tresc" class="skip-to-content">Przejdź do głównej treści</a>
+
+  <Header />
+
+  <main id="glowna-tresc">
+    <slot />
+  </main>
+
+  <Footer />
+</body>
+</html>
