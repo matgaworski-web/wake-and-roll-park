@@ -1,0 +1,14 @@
+# Ignoruj pliki tymczasowe i skrypty developerskie
+*.log
+*.tmp
+CF-*.ps1
+check-*.ps1
+diagnostics.ps1
+setup-cf-*.ps1
+POBIERZ-*.bat
+KLIKNIJ-*.bat
+automatyczny-upload-*.bat
+deploy-cloudflare.bat
+zainstaluj-strone.bat
+DNS-DLA-HOMEPL.txt
+.system_generated/

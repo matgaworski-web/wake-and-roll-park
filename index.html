@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wake & Roll Park Łódź | Łap Chwilę Nad Wodą • Wakeboard & Beach Bar</title>
+  <meta name="description" content="Łap chwilę na Stawach Stefańskiego! Poczuj wolność, skacz na wyciągu wakeboardowym, odpoczywaj na leżaku w Beach Barze i zbieraj wspomnienia, które zostaną na całe życie.">
+  <meta name="keywords" content="wakeboard łódź, wake and roll park, stawy stefańskiego, łap chwilę, wyciąg wakeboardowy łódź, beach bar łódź, sporty wodne łódź">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Wake & Roll Park Łódź – Łap Chwilę. Poczuj Wolność na Desce.">
+  <meta property="og:description" content="Złap deskę, poczuj chłód wody i eksplozję endorfin. Twój letni spot na Stawach Stefańskiego w Łodzi.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:url" content="https://www.wakeandrollpark.pl/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://www.wakeandrollpark.pl/">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Interactive Water Spray Canvas (Rozprysk wody za deską pod kursorem) -->
+  <canvas id="waterTrailCanvas" class="water-trail-canvas"></canvas>
+
+  <!-- Top Ambient & Golden Hour Bar -->
+  <div class="ambient-bar">
+    <div class="container ambient-container">
+      <div class="ambient-status">
+        <span class="pulse-live"></span>
+        <span class="live-label">STAWY STEFAŃSKIEGO LIVE:</span>
+        <span class="live-details">Woda <strong>21.5°C</strong> • Tafla płaska jak stół • Złota Godzina dzisiaj o <strong>18:45</strong></span>
+      </div>
+      <div class="ambient-actions">
+        <div class="moment-ticker">
+          <i class="fa-solid fa-clock"></i> <span>Nie odkładaj lata na później: <strong>Łap Chwilę!</strong></span>
+        </div>
+        <button class="sound-btn" id="soundToggleBtn" title="Włącz szum jeziora i fal">
+          <i class="fa-solid fa-volume-high"></i> <span id="soundBtnText">Poczuj dźwięk wody</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#hero" class="brand-logo">
+        <div class="logo-mark animate-spin-slow">
+          <i class="fa-solid fa-water"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">WAKE & ROLL</span>
+          <span class="logo-subtitle">ŁAP CHWILĘ • STAWY STEFAŃSKIEGO • ŁÓDŹ</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="#momenty" class="nav-link">Łap Chwilę</a>
+        <a href="#simulator" class="nav-link">Symulator Skoku</a>
+        <a href="#stories" class="nav-link">Relacje IG</a>
+        <a href="#wakewakacje" class="nav-link">Zajęcia Wakeboardowe (Dzieci)</a>
+        <a href="#beachbar" class="nav-link">Beach Bar</a>
+        <a href="#cennik" class="nav-link">Cennik</a>
+        <a href="#rezerwacja" class="btn btn-primary nav-btn pulse-board">
+          <i class="fa-solid fa-bolt"></i> Zarezerwuj Sesję
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="tel:+48667102828" class="phone-chip">
+          <i class="fa-solid fa-phone"></i>
+          <span>667 102 828</span>
+        </a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <!-- Floating Decorative Animated Boards -->
+    <div class="floating-board board-left" id="floatBoardLeft">
+      <div class="board-shape">
+        <div class="board-graphic"></div>
+        <div class="board-binding binding-1"></div>
+        <div class="board-binding binding-2"></div>
+      </div>
+      <div class="board-spray"></div>
+    </div>
+
+    <div class="hero-glow-blob blob-1"></div>
+    <div class="hero-glow-blob blob-2"></div>
+
+    <div class="container hero-container">
+      <div class="hero-content">
+        <div class="hero-badge pulse-board">
+          <i class="fa-solid fa-compass"></i>
+          <span>LATO TRWA TYLKO CHWILĘ • ZŁAP JĄ Z NAMI</span>
+        </div>
+
+        <h1 class="hero-title">
+          ZŁAP DESKĘ.<br>
+          <span class="gradient-text animate-gradient">POCZUJ WOLNOŚĆ.</span><br>
+          ŁAP KAŻDĄ CHWILĘ.
+        </h1>
+
+        <p class="hero-lead">
+          Pamiętasz to uczucie, kiedy czas nagle się zatrzymuje? 
+          Kiedy pędzisz po tafli Stawów Stefańskiego, wiatr uderza w twarz, a Ty zapominasz o całym świecie. 
+          <strong>Nie czekaj na idealny moment – po prostu wskakuj do wody.</strong>
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#rezerwacja" class="btn btn-primary btn-large pulse-board">
+            <i class="fa-solid fa-person-snowboarding"></i> Zarezerwuj Swój Czas Na Wodzie
+          </a>
+          <a href="#simulator" class="btn btn-outline btn-large">
+            <i class="fa-solid fa-gamepad"></i> Wypróbuj Symulator Skoku
+          </a>
+        </div>
+
+        <div class="hero-trust-row">
+          <div class="trust-item">
+            <div class="trust-stars">★★★★★</div>
+            <span><strong>5 000+</strong> niezapomnianych uśmiechów na wodzie</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <strong>180m toru</strong>
+            <span>System Sesitec 2.0 dopasowany pod Ciebie</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <strong>99% sukcesu</strong>
+            <span>Wstajesz na deskę już podczas 1. sesji</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual with 3D Tilt Card & Wake Spray -->
+      <div class="hero-visual">
+        <div class="tilt-card-container" id="heroTiltCard">
+          <div class="tilt-card-inner">
+            <div class="card-glow-overlay"></div>
+            <div class="tilt-card-header">
+              <div class="user-pill">
+                <i class="fa-brands fa-instagram"></i>
+                <span>@wakeandrollpark</span>
+              </div>
+              <span class="live-pill"><i class="fa-solid fa-bolt"></i> Czyste Endorfiny</span>
+            </div>
+
+            <div class="tilt-card-media">
+              <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80" alt="Rider na kickerze" class="tilt-card-img">
+              <div class="dynamic-board-icon">
+                <i class="fa-solid fa-water"></i>
+              </div>
+              <div class="emotion-quote-pill">
+                <i class="fa-solid fa-quote-left"></i>
+                <span>„To nie jest zwykłe pływanie. To reset, po którym wracasz z uśmiechem na twarzy!”</span>
+              </div>
+            </div>
+
+            <div class="tilt-card-footer">
+              <div class="vibe-metrics">
+                <div class="vibe-metric-item">
+                  <i class="fa-solid fa-heart text-danger"></i>
+                  <div>
+                    <strong>Emocje</strong>
+                    <span>100% adrenaliny</span>
+                  </div>
+                </div>
+                <div class="vibe-metric-item">
+                  <i class="fa-solid fa-sun text-warning"></i>
+                  <div>
+                    <strong>Golden Hour</strong>
+                    <span>Zachód słońca nad taflą</span>
+                  </div>
+                </div>
+              </div>
+              <a href="#rezerwacja" class="btn btn-sm btn-outline btn-block">
+                Zarezerwuj termin na dzisiaj &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animated Wave Divider Bottom -->
+    <div class="wave-divider">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path class="wave-path-1" d="M0,32L60,42.7C120,53,240,75,360,80C480,85,600,75,720,58.7C840,43,960,21,1080,21.3C1200,21,1320,43,1380,53.3L1440,64L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z"></path>
+        <path class="wave-path-2" d="M0,64L48,58.7C96,53,192,43,288,48C384,53,480,75,576,80C672,85,768,75,864,64C960,53,1056,43,1152,48C1248,53,1344,75,1392,85.3L1440,96L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Interactive Wakeboard Kicker Simulator (Emocje & Animacja) -->
+  <section class="section simulator-section" id="simulator">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-tag"><i class="fa-solid fa-gamepad"></i> POCZUJ SKOK JUŻ TERAZ</div>
+        <h2 class="section-title">Interaktywny Symulator Skoku z Kickera</h2>
+        <p class="section-subtitle">Zobacz, jak wygląda lot nad Stawami Stefańskiego! Kliknij przycisk, najedź na kicker i wykonaj swój pierwszy obrót!</p>
+      </div>
+
+      <div class="simulator-card">
+        <div class="simulator-canvas-wrap">
+          <canvas id="kickerGameCanvas" width="900" height="380"></canvas>
+          <div class="simulator-overlay-ui">
+            <div class="simulator-stats-pill">
+              <span>Wysokość skoku: <strong id="simAltitude">0 m</strong></span>
+              <span>Styl & Trick: <strong id="simTrick" class="text-cyan">Płynny carving</strong></span>
+              <span>Punkty Vibe: <strong id="simVibe">100%</strong></span>
+            </div>
+            <div class="simulator-controls">
+              <button class="sim-btn" id="simCarveBtn"><i class="fa-solid fa-water"></i> Złap Krawędź</button>
+              <button class="sim-btn sim-btn-jump pulse-board" id="simJumpBtn"><i class="fa-solid fa-jet-fighter-up"></i> WYBIJ Z KICKERA! (SPACJA)</button>
+              <button class="sim-btn" id="sim360Btn"><i class="fa-solid fa-arrows-rotate"></i> Obrót 360°</button>
+            </div>
+          </div>
+        </div>
+        <div class="simulator-caption">
+          <p>
+            <i class="fa-solid fa-circle-info text-cyan"></i> 
+            W prawdziwym świecie to uczucie jest 100 razy silniejsze. Kiedy orczyk ciągnie Cię z prędkością 30 km/h, a Ty wybijasz się nad wodę – czas przestaje istnieć!
+          </p>
+          <a href="#rezerwacja" class="btn btn-primary btn-sm pulse-board">Chcę to poczuć na żywo! &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sekcja: "Momenty, Dla Których Warto Żyć" (Łap Chwilę) -->
+  <section class="section moments-section" id="momenty">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-tag"><i class="fa-solid fa-heart-pulse"></i> FILOZOFIA ŁAP CHWILĘ</div>
+        <h2 class="section-title">Momenty, Które Definiują Twoje Lato</h2>
+        <p class="section-subtitle">Prawdziwe życie nie dzieje się w Excelu. Dzieje się tutaj, kiedy słońce świeci na wodę, a Ty trzymasz deskę pod stopami.</p>
+      </div>
+
+      <div class="moments-grid">
+        <!-- Moment 1 -->
+        <div class="moment-box tilt-box">
+          <div class="moment-badge">Chwila #01</div>
+          <div class="moment-icon icon-cyan">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <h3 class="moment-title">Pierwszy Start Bez Wywrotki</h3>
+          <p class="moment-desc">
+            Przed startem: lekki stres i niepewność. W ułamku sekundy: wyciąg rusza, woda spływa po desce, 
+            a Ty wstajesz, prostujesz sylwetkę i czujesz jak lecisz po gładkiej powierzchni. 
+            Wszyscy na pomoście biją brawo. To moment, w którym zakochujesz się w tym sporcie.
+          </p>
+          <div class="moment-highlight">
+            <i class="fa-solid fa-circle-check"></i> 99% nowicjuszy wstaje na deskę już w 1. godzinie z instruktorem!
+          </div>
+        </div>
+
+        <!-- Moment 2 -->
+        <div class="moment-box tilt-box">
+          <div class="moment-badge">Chwila #02</div>
+          <div class="moment-icon icon-orange">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+          <h3 class="moment-title">Zachód Słońca o 20:15 z Zimnym Drinkiem</h3>
+          <p class="moment-desc">
+            Po 2 godzinach pływania siadasz boso na leżaku. Włosy schną w ciepłym wietrze, 
+            w ręku trzymasz zimne lane kraftowe piwo lub domową lemoniadę, a słońce barwi Stawy Stefańskiego 
+            na głębokie złoto. Czujesz, jak z Twojego ciała ulatuje cały stres minionych tygodni.
+          </p>
+          <div class="moment-highlight">
+            <i class="fa-solid fa-circle-check"></i> Drewniany pomost, plaża z leżakami i nastrojowe oświetlenie.
+          </div>
+        </div>
+
+        <!-- Moment 3 -->
+        <div class="moment-box tilt-box">
+          <div class="moment-badge">Chwila #03</div>
+          <div class="moment-icon icon-pink">
+            <i class="fa-solid fa-user-group"></i>
+          </div>
+          <h3 class="moment-title">Śmiech i Przybita Piątka z Ekipą</h3>
+          <p class="moment-desc">
+            Niezależnie od tego, czy spektakularnie wpadniesz do wody, czy wkleisz idealny skok na kickerze – 
+            nasza plaża nie ocenia. Tutaj liczy się zajawka, dopingowanie się nawzajem i szczera przybita piątka. 
+            Po 15 minutach czujesz się jak wśród przyjaciół, których znasz od lat.
+          </p>
+          <div class="moment-highlight">
+            <i class="fa-solid fa-circle-check"></i> Prawdziwa wakeboardowa społeczność bez napinki i hejtu.
+          </div>
+        </div>
+
+        <!-- Moment 4 -->
+        <div class="moment-box tilt-box">
+          <div class="moment-badge">Chwila #04</div>
+          <div class="moment-icon icon-green">
+            <i class="fa-solid fa-child-reaching"></i>
+          </div>
+          <h3 class="moment-title">Duma w Oczach Twojego Dziecka</h3>
+          <p class="moment-desc">
+            Zajęcia wakeboardowe WakeWakacje: moment, kiedy Twój syn lub córka odkłada telefon, przełamuje strach, 
+            płynie po raz pierwszy po wodzie i krzyczy: „Mamo, Tato, widzieliście?!”. 
+            Ta pewność siebie i odwaga zostaną z dzieckiem na całe dorosłe życie.
+          </p>
+          <div class="moment-highlight">
+            <i class="fa-solid fa-circle-check"></i> Certyfikowana opieka, wyżywienie i codzienne pływanie od 8:00 do 17:00.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instagram Stories Bar -->
+  <section class="stories-section" id="stories">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-tag"><i class="fa-brands fa-instagram"></i> HISTORIE PROSTO Z INSTAGRAMA</div>
+        <h2 class="section-title">Wyróżnione Relacje: Codzienność Na Stawach</h2>
+        <p class="section-subtitle">Kliknij w kółeczko relacji i zobacz, co działo się u nas dzisiaj!</p>
+      </div>
+
+      <div class="stories-scroll">
+        <div class="story-circle-item" data-story="wake">
+          <div class="story-ring active">
+            <div class="story-thumb" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=300&q=80')"></div>
+          </div>
+          <span class="story-label">🌊 Wake & Skoki</span>
+        </div>
+
+        <div class="story-circle-item" data-story="beachbar">
+          <div class="story-ring active">
+            <div class="story-thumb" style="background-image: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=300&q=80')"></div>
+          </div>
+          <span class="story-label">🍹 Beach Bar</span>
+        </div>
+
+        <div class="story-circle-item" data-story="wakewakacje">
+          <div class="story-ring active">
+            <div class="story-thumb" style="background-image: url('https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=300&q=80')"></div>
+          </div>
+          <span class="story-label">👶 WakeWakacje</span>
+        </div>
+
+        <div class="story-circle-item" data-story="events">
+          <div class="story-ring active">
+            <div class="story-thumb" style="background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=300&q=80')"></div>
+          </div>
+          <span class="story-label">🎵 DJ & Eventy</span>
+        </div>
+
+        <div class="story-circle-item" data-story="sup">
+          <div class="story-ring active">
+            <div class="story-thumb" style="background-image: url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=300&q=80')"></div>
+          </div>
+          <span class="story-label">🏄‍♀️ Deski SUP</span>
+        </div>
+
+        <div class="story-circle-item" data-story="sauna">
+          <div class="story-ring active">
+            <div class="story-thumb" style="background-image: url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=300&q=80')"></div>
+          </div>
+          <span class="story-label">🧖‍♂️ Sauna & Zima</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story Modal Viewer -->
+  <div class="story-modal" id="storyModal">
+    <div class="story-modal-overlay" id="storyOverlay"></div>
+    <div class="story-modal-box">
+      <div class="story-progress-bar">
+        <div class="story-progress-fill" id="storyProgress"></div>
+      </div>
+      <div class="story-modal-header">
+        <div class="story-user">
+          <div class="story-avatar"><i class="fa-solid fa-water"></i></div>
+          <div>
+            <strong id="storyModalTitle">Wake & Roll Park</strong>
+            <small id="storyModalTime">Na żywo</small>
+          </div>
+        </div>
+        <button class="story-close-btn" id="storyCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="story-modal-body">
+        <img id="storyModalImg" src="" alt="Story visual">
+        <div class="story-caption-overlay">
+          <p id="storyModalDesc"></p>
+          <a href="#rezerwacja" class="btn btn-primary btn-sm pulse-board" id="storyCtaBtn">Chcę tego spróbować! &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WakeWakacje Banner (Zajęcia Wakeboardowe dla Dzieci) -->
+  <section class="wakewakacje-section" id="wakewakacje">
+    <div class="container">
+      <div class="wakewakacje-card tilt-box">
+        <div class="wakewakacje-content">
+          <span class="badge-accent"><i class="fa-solid fa-sun"></i> ZAJĘCIA WAKEBOARDOWE W ŁODZI 2026</span>
+          <h2 class="wakewakacje-title">Zajęcia Wakeboardowe, Które Zmienią Wszystko</h2>
+          <p class="wakewakacje-desc">
+            Zero nudy i zero ekranów. Prawdziwa woda, wiatr, wspaniali rówieśnicy i duma z pokonywania własnych słabości. 
+            Autorski program zajęć wakeboardowych na Stawach Stefańskiego pod marką <strong>WakeWakacje</strong> (dla dzieci i młodzieży 7–16 lat).
+          </p>
+
+          <div class="wakewakacje-points">
+            <div class="point-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <div>
+                <strong>Wyciąg 2 razy dziennie z instruktorem</strong>
+                <p>Nawet dzieci, które nigdy nie pływały na desce, już w połowie tygodnia czują się jak ryba w wodzie!</p>
+              </div>
+            </div>
+            <div class="point-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <div>
+                <strong>Opieka 8:00 – 17:00 i zdrowe wyżywienie</strong>
+                <p>Certyfikowana kadra, pełne wyżywienie (śniadanie, obiad, podwieczorek) i bezpieczne warunki.</p>
+              </div>
+            </div>
+            <div class="point-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <div>
+                <strong>SUP, skimboard, slackline i gry terenowe</strong>
+                <p>Aktywne spędzanie czasu na świeżym powietrzu wśród zieleni Parku im. 1 Maja.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="wakewakacje-actions">
+            <a href="https://wakewakacje.pl" target="_blank" rel="noopener" class="btn btn-primary pulse-board">
+              <i class="fa-solid fa-graduation-cap"></i> Zobacz terminy na WakeWakacje.pl
+            </a>
+            <a href="tel:+48535089200" class="btn btn-outline">
+              <i class="fa-solid fa-phone"></i> Infolinia zajęć: 535 089 200
+            </a>
+          </div>
+        </div>
+
+        <div class="wakewakacje-media">
+          <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=800&q=80" alt="Dzieci na zajęciach wakeboardowych" class="wakewakacje-img">
+          <div class="wakewakacje-float-badge">
+            <div class="badge-icon"><i class="fa-solid fa-award"></i></div>
+            <div>
+              <strong>100% Bezpieczeństwa</strong>
+              <small>Zgłoszone do Kuratorium Oświaty</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beach Bar & Eventy -->
+  <section class="section beachbar-section" id="beachbar">
+    <div class="container">
+      <div class="beachbar-hero-card tilt-box">
+        <div class="beachbar-text">
+          <div class="section-tag"><i class="fa-solid fa-cocktail"></i> TWÓJ LETNI AZYL</div>
+          <h2 class="section-title">Beach Bar: Muzyka, Słońce & Zimne Krafty</h2>
+          <p class="section-desc">
+            Nawet jeśli dzisiaj nie wchodzisz na deskę – wpadnij poczuć ten klimat. 
+            Leżaki na piasku, chłodny cień drzew, aromatyczna kawa specialty i dźwięki muzyki house. 
+            To miejsce, gdzie spotykają się uśmiechnięci ludzie z całej Łodzi.
+          </p>
+
+          <div class="bar-highlights">
+            <div class="highlight-item">
+              <i class="fa-solid fa-compact-disc"></i>
+              <div>
+                <strong>Niedzielne Coffee Rave „Wstań i Tańcz”</strong>
+                <p>Elektroniczne poranki, tańce boso na pomoście i aromatyczna kawa – najlepszy początek niedzieli w mieście!</p>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <i class="fa-solid fa-beer-mug-empty"></i>
+              <div>
+                <strong>Lokalne Browary Kraftowe & Koktajle</strong>
+                <p>Schłodzone lane piwa, Aperol Spritz, rześkie lemoniady i napoje izotoniczne po treningu.</p>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <i class="fa-solid fa-champagne-glasses"></i>
+              <div>
+                <strong>Wieczory Kawalerskie, Panieńskie & Urodziny</strong>
+                <p>Prywatny tor na wyłączność, instruktor, leżaki, grill i oprawa muzyczna – zorganizujemy to za Ciebie!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="beachbar-gallery">
+          <div class="bar-img-card">
+            <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=600&q=80" alt="Beach Bar Chillout">
+            <div class="bar-img-tag">Sunset Chillout</div>
+          </div>
+          <div class="bar-img-card">
+            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" alt="Live DJ na plaży">
+            <div class="bar-img-tag">Coffee Rave & Live DJ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Cennik -->
+  <section class="section pricing-section" id="cennik">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-tag"><i class="fa-solid fa-tag"></i> PRZEJRZYSTE ZASADY</div>
+        <h2 class="section-title">Wybierz Swój Pakiet Emocji</h2>
+        <p class="section-subtitle">Pojedyncze sesje, wyciąg na wyłączność dla Twojej ekipy lub pakiety z instruktorem.</p>
+      </div>
+
+      <div class="pricing-tabs">
+        <button class="pricing-tab-btn active" data-tab="wyciag">Wyciąg Wakeboard</button>
+        <button class="pricing-tab-btn" data-tab="sprzet">Wypożyczalnia & SUP</button>
+        <button class="pricing-tab-btn" data-tab="karnety">Karnety & Oszczędność</button>
+        <button class="pricing-tab-btn" data-tab="grupy">Grupy & Urodziny</button>
+      </div>
+
+      <!-- Wyciąg -->
+      <div class="pricing-tab-pane active" id="pane-wyciag">
+        <div class="pricing-grid">
+          <!-- Karta 1: Pn-Pt -->
+          <div class="pricing-card tilt-box">
+            <div class="pricing-card-header">
+              <span class="pricing-badge">Poniedziałek – Piątek</span>
+              <h3 class="pricing-plan-name">Sesja Wyciągu (1h)</h3>
+              <p class="pricing-plan-sub">Maksymalnie 4 osoby na torze – luźne pływanie</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">45</span>
+                <span class="period">/ 1h / os. (+ deska 20 zł)</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> 1h rotacyjnego pływania na torze Sesitec 2.0</li>
+              <li><i class="fa-solid fa-check"></i> <strong>Wypożyczenie deski: +20 zł</strong></li>
+              <li><i class="fa-solid fa-check"></i> Atestowana kamizelka 50N w cenie</li>
+              <li><i class="fa-solid fa-check"></i> Bieżące wsparcie operatora wyciągu</li>
+              <li><i class="fa-solid fa-check"></i> Dostęp do przeszkód i kickerów</li>
+            </ul>
+            <a href="#rezerwacja" class="btn btn-outline btn-block">Wybierz termin Pn-Pt</a>
+          </div>
+
+          <!-- Karta 2: Weekend -->
+          <div class="pricing-card popular tilt-box">
+            <div class="popular-ribbon">WEEKEND VIBE</div>
+            <div class="pricing-card-header">
+              <span class="pricing-badge">Sobota – Niedziela</span>
+              <h3 class="pricing-plan-name">Sesja Weekendowa (1h)</h3>
+              <p class="pricing-plan-sub">Najlepszy letni klimat na Stawach Stefańskiego</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">50</span>
+                <span class="period">/ 1h / os. (+ deska 20 zł)</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> 1h pływania na torze w weekend</li>
+              <li><i class="fa-solid fa-check"></i> <strong>Wypożyczenie deski: +20 zł</strong></li>
+              <li><i class="fa-solid fa-check"></i> Kamizelka wypornościowa w cenie</li>
+              <li><i class="fa-solid fa-check"></i> Muzyka, Beach Bar i najlepsza atmosfera</li>
+              <li><i class="fa-solid fa-check"></i> Dostęp do kickerów M i L</li>
+            </ul>
+            <a href="#rezerwacja" class="btn btn-primary btn-block pulse-board">Wybierz termin Weekend</a>
+          </div>
+
+          <!-- Karta 3: Wyłączność -->
+          <div class="pricing-card tilt-box">
+            <div class="pricing-card-header">
+              <span class="pricing-badge">Cały Tor Dla Was</span>
+              <h3 class="pricing-plan-name">Wyciąg na Wyłączność</h3>
+              <p class="pricing-plan-sub">Prywatny tor tylko dla Waszej ekipy (do 5 osób)</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">180 / 200</span>
+                <span class="period">/ 1h (180 zł Pn–Pt • 200 zł Weekend)</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> <strong>Pn – Pt: 180 zł / godz.</strong></li>
+              <li><i class="fa-solid fa-check"></i> <strong>Weekend (Sob – Nd): 200 zł / godz.</strong></li>
+              <li><i class="fa-solid fa-check"></i> Wypożyczenie deski: +20 zł / szt.</li>
+              <li><i class="fa-solid fa-check"></i> Maksymalna liczba pływań bez czekania</li>
+              <li><i class="fa-solid fa-check"></i> Operator dopasowuje prędkość pod każdego</li>
+            </ul>
+            <a href="#rezerwacja" class="btn btn-outline btn-block">Rezerwuj wyłączność</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sprzęt & SUP -->
+      <div class="pricing-tab-pane" id="pane-sprzet">
+        <div class="pricing-grid">
+          <div class="pricing-card popular tilt-box">
+            <div class="popular-ribbon">HIT RELAKSU</div>
+            <div class="pricing-card-header">
+              <span class="pricing-badge">Wypożyczalnia</span>
+              <h3 class="pricing-plan-name">Deski SUP (Stand Up Paddle)</h3>
+              <p class="pricing-plan-sub">Spokojny relaks na wodzie dla każdego</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">40</span>
+                <span class="period">/ 1h • 70 zł za 2h</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> Stabilne deski all-round i touring</li>
+              <li><i class="fa-solid fa-check"></i> Lekkie wiosło regulowane + leash</li>
+              <li><i class="fa-solid fa-check"></i> Kamizelka asekuracyjna w cenie</li>
+              <li><i class="fa-solid fa-check"></i> Krótkie przeszkolenie na lądzie</li>
+            </ul>
+            <a href="#rezerwacja" class="btn btn-primary btn-block pulse-board">Wypożycz SUP</a>
+          </div>
+
+          <div class="pricing-card tilt-box">
+            <div class="pricing-card-header">
+              <span class="pricing-badge">Komfort</span>
+              <h3 class="pricing-plan-name">Pianka Neoprenowa / Kask</h3>
+              <p class="pricing-plan-sub">Ciepło i bezpieczeństwo w każdych warunkach</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">10</span>
+                <span class="period">/ element / sesja</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> Ciepłe pianki Mystic 3/2 i 4/3 mm</li>
+              <li><i class="fa-solid fa-check"></i> Atestowany kask z ochroną uszu</li>
+              <li><i class="fa-solid fa-check"></i> Dezynfekcja po każdym użyciu</li>
+              <li><i class="fa-solid fa-check"></i> Rozmiary od XS do XXL (również dla dzieci)</li>
+            </ul>
+            <a href="#rezerwacja" class="btn btn-outline btn-block">Dobierz na miejscu</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Karnety -->
+      <div class="pricing-tab-pane" id="pane-karnety">
+        <div class="pricing-grid">
+          <div class="pricing-card tilt-box">
+            <div class="pricing-card-header">
+              <h3 class="pricing-plan-name">Karnet 5 Godzin</h3>
+              <p class="pricing-plan-sub">Do wykorzystania przez cały sezon</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">200</span>
+                <span class="period">/ 40 zł za godzinę</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> 5 pojedynczych wejść na tor</li>
+              <li><i class="fa-solid fa-check"></i> Ważność do końca sezonu 2026</li>
+              <li><i class="fa-solid fa-check"></i> Oszczędzasz do 50 zł</li>
+            </ul>
+          </div>
+
+          <div class="pricing-card popular tilt-box">
+            <div class="pricing-card-header">
+              <h3 class="pricing-plan-name">Karnet 10 Godzin</h3>
+              <p class="pricing-plan-sub">Dla tych, którzy zakochali się w desce</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">380</span>
+                <span class="period">/ 38 zł za godzinę</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> 10 pojedynczych sesji</li>
+              <li><i class="fa-solid fa-check"></i> Szybka rezerwacja slotów online</li>
+              <li><i class="fa-solid fa-check"></i> Pianka z 50% rabatem</li>
+            </ul>
+          </div>
+
+          <div class="pricing-card tilt-box">
+            <div class="pricing-card-header">
+              <h3 class="pricing-plan-name">Karnet Sezonowy VIP</h3>
+              <p class="pricing-plan-sub">Twój drugi dom na całe lato</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">1890</span>
+                <span class="period">/ cały sezon</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> Pływanie codziennie w wyznaczonych slotach</li>
+              <li><i class="fa-solid fa-check"></i> 20% zniżki w Beach Barze</li>
+              <li><i class="fa-solid fa-check"></i> Darmowe przechowywanie deski w parku</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grupy -->
+      <div class="pricing-tab-pane" id="pane-grupy">
+        <div class="pricing-grid">
+          <div class="pricing-card tilt-box">
+            <div class="pricing-card-header">
+              <h3 class="pricing-plan-name">Kawalerskie & Panieńskie</h3>
+              <p class="pricing-plan-sub">Zaskocz młodego/młodą czymś niezapomnianym</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">od 490</span>
+                <span class="period">/ pakiet 2h</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> 2h wyciągu na wyłączność z instruktorem</li>
+              <li><i class="fa-solid fa-check"></i> Komplet sprzętu dla każdego (deski, pianki, kaski)</li>
+              <li><i class="fa-solid fa-check"></i> Rezerwacja leżaków i stolików na plaży</li>
+              <li><i class="fa-solid fa-check"></i> Powitalne drinki lub rześka lemoniada</li>
+            </ul>
+          </div>
+
+          <div class="pricing-card popular tilt-box">
+            <div class="pricing-card-header">
+              <h3 class="pricing-plan-name">Integracja Firmowa & Team Building</h3>
+              <p class="pricing-plan-sub">Zbuduj więzi poza biurem i sztywnymi ramami</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">Indywidualnie</span>
+                <span class="period">/ grupy do 50 osób</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> Wyciąg + regaty SUP + strefa relaksu</li>
+              <li><i class="fa-solid fa-check"></i> Grill, krafty, catering piknikowy</li>
+              <li><i class="fa-solid fa-check"></i> Nagłośnienie, DJ set i ognisko po zmroku</li>
+            </ul>
+          </div>
+
+          <div class="pricing-card tilt-box">
+            <div class="pricing-card-header">
+              <h3 class="pricing-plan-name">Urodziny Dla Dzieci</h3>
+              <p class="pricing-plan-sub">Radość, uśmiechy i woda</p>
+              <div class="pricing-price">
+                <span class="currency">PLN</span>
+                <span class="amount">od 420</span>
+                <span class="period">/ pakiet urodzinowy</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li><i class="fa-solid fa-check"></i> Opieka instruktora i animatora</li>
+              <li><i class="fa-solid fa-check"></i> Bezpieczna zabawa na wyciągu + deski SUP</li>
+              <li><i class="fa-solid fa-check"></i> Miejsce na tort, lody i poczęstunek na plaży</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rezerwator & Kalkulator -->
+  <section class="section booking-section" id="rezerwacja">
+    <div class="container">
+      <div class="booking-wrapper">
+        <div class="booking-info-col">
+          <div class="section-tag"><i class="fa-solid fa-calendar-check"></i> ZŁAP SWÓJ TERMIN</div>
+          <h2 class="section-title">Nie Czekaj. Złap Swój Moment Na Wodzie!</h2>
+          <p class="booking-desc">
+            Skonfiguruj sesję poniżej, sprawdź koszt na żywo i wyślij zgłoszenie w 30 sekund. 
+            Nasz operator skontaktuje się z Tobą telefonicznie, aby potwierdzić termin.
+          </p>
+
+          <div class="booking-perks">
+            <div class="perk-item">
+              <i class="fa-solid fa-shield-cat"></i>
+              <div>
+                <strong>Gwarancja Pogodowa</strong>
+                <p>W przypadku nagłej ulewy lub burzy bez żadnych opłat przenosimy rezerwację na inny słoneczny dzień.</p>
+              </div>
+            </div>
+            <div class="perk-item">
+              <i class="fa-solid fa-clock"></i>
+              <div>
+                <strong>Wystarczy Przyjść 15 Minut Wcześniej</strong>
+                <p>Spokojnie dobierzemy piankę, kask, napijesz się wody i wejdziesz na tor bez pośpiechu.</p>
+              </div>
+            </div>
+            <div class="perk-item">
+              <i class="fa-solid fa-phone-volume"></i>
+              <div>
+                <strong>Szybki Kontakt Telefoniczny</strong>
+                <p>Wolisz zarezerwować przez telefon? Zadzwoń: <strong>+48 667 102 828</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-form-col">
+          <form class="calc-form tilt-box" id="bookingForm">
+            <h3 class="form-title"><i class="fa-solid fa-calculator"></i> Kalkulator & Rezerwacja Terminu</h3>
+
+            <div class="form-group">
+              <label for="sessionType">Wybierz sesję wyciągu:</label>
+              <select id="sessionType" class="form-control">
+                <option value="single-weekday" data-price="45">1 sesja 1h (Poniedziałek – Piątek) - 45 zł</option>
+                <option value="single-weekend" data-price="50">1 sesja 1h (Weekend: Sobota – Niedziela) - 50 zł</option>
+                <option value="exclusive-weekday" data-price="180">Wyciąg na wyłączność 1h (Pon – Pt) - 180 zł</option>
+                <option value="exclusive-weekend" data-price="200">Wyciąg na wyłączność 1h (Weekend) - 200 zł</option>
+                <option value="sup" data-price="40">Wypożyczenie deski SUP (1h) - 40 zł</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-half">
+                <label for="bookingDate">Data sesji:</label>
+                <input type="date" id="bookingDate" class="form-control" required>
+              </div>
+              <div class="form-group col-half">
+                <label for="bookingTime">Godzina:</label>
+                <select id="bookingTime" class="form-control">
+                  <option>10:00 - 11:00 (Poranny flat)</option>
+                  <option>11:00 - 12:00</option>
+                  <option>12:00 - 13:00</option>
+                  <option>13:00 - 14:00</option>
+                  <option>14:00 - 15:00</option>
+                  <option>15:00 - 16:00</option>
+                  <option>16:00 - 17:00</option>
+                  <option selected>17:00 - 18:00 (Sunset Sessions)</option>
+                  <option>18:00 - 19:00 (Złota Godzina)</option>
+                  <option>19:00 - 20:00 (Zmierzch nad wodą)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-half">
+                <label for="numPeople">Liczba osób:</label>
+                <input type="number" id="numPeople" class="form-control" value="1" min="1" max="10">
+              </div>
+              <div class="form-group col-half">
+                <label for="numHours">Czas (godziny):</label>
+                <select id="numHours" class="form-control">
+                  <option value="1">1 godzina</option>
+                  <option value="2">2 godziny (rekomendowane)</option>
+                  <option value="3">3 godziny</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Potrzebujesz sprzętu na miejscu?</label>
+              <div class="addons-grid">
+                <label class="addon-checkbox">
+                  <input type="checkbox" id="addBoard" data-cost="20">
+                  <span>Wypożyczenie deski wakeboard (+20 zł)</span>
+                </label>
+                <label class="addon-checkbox">
+                  <input type="checkbox" id="addWetsuit" data-cost="10">
+                  <span>Ciepła pianka neoprenowa Mystic (+10 zł)</span>
+                </label>
+                <label class="addon-checkbox">
+                  <input type="checkbox" id="addHelmet" data-cost="10">
+                  <span>Kask z osłoną uszu (+10 zł)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-half">
+                <label for="userName">Imię i nazwisko:</label>
+                <input type="text" id="userName" class="form-control" placeholder="np. Kasia Nowak" required>
+              </div>
+              <div class="form-group col-half">
+                <label for="userPhone">Numer telefonu:</label>
+                <input type="tel" id="userPhone" class="form-control" placeholder="+48 000 000 000" required>
+              </div>
+            </div>
+
+            <div class="calc-summary">
+              <div class="summary-row">
+                <span>Szacowany koszt:</span>
+                <span class="total-price" id="totalPrice">45 PLN</span>
+              </div>
+              <small class="summary-note">*Płatność na miejscu kartą, BLIK-iem lub gotówką.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-large pulse-board">
+              <i class="fa-solid fa-paper-plane"></i> Zarezerwuj Swój Czas
+            </button>
+            <div id="bookingNotification" class="notification-toast"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location & Map -->
+  <section class="section location-section" id="lokalizacja">
+    <div class="container">
+      <div class="location-card tilt-box">
+        <div class="location-details">
+          <div class="section-tag"><i class="fa-solid fa-compass"></i> TRAFISZ BEZ PROBLEMU</div>
+          <h2 class="section-title">Stawy Stefańskiego, Łódź</h2>
+          <p class="location-desc">
+            Południowa część Łodzi (Ruda Pabianicka / Górna), Park im. 1 Maja. Największy i najczystszy zbiornik 
+            w granicach miasta, otoczony kojącą zielenią.
+          </p>
+
+          <div class="contact-box-grid">
+            <div class="contact-box">
+              <i class="fa-solid fa-map-pin"></i>
+              <div>
+                <strong>Adres spotu:</strong>
+                <p>ul. Patriotyczna 3 (Stawy Stefańskiego)<br>93-452 Łódź</p>
+              </div>
+            </div>
+
+            <div class="contact-box">
+              <i class="fa-solid fa-clock"></i>
+              <div>
+                <strong>Godziny otwarcia:</strong>
+                <p>Pn – Pt: 12:00 – 21:00<br>Sob – Nd: 10:00 – 21:30</p>
+              </div>
+            </div>
+
+            <div class="contact-box">
+              <i class="fa-solid fa-phone"></i>
+              <div>
+                <strong>Rezerwacje & Telefon:</strong>
+                <p><a href="tel:+48667102828">+48 667 102 828</a><br><a href="tel:+48535089200">+48 535 089 200</a></p>
+              </div>
+            </div>
+
+            <div class="contact-box">
+              <i class="fa-solid fa-envelope"></i>
+              <div>
+                <strong>E-mail:</strong>
+                <p><a href="mailto:kontakt@wakewakacje.pl">kontakt@wakewakacje.pl</a></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="how-to-get">
+            <h4><i class="fa-solid fa-car"></i> Dojazd i bezpłatny parking:</h4>
+            <p>Wjazd od ul. Rudzkiej i Patriotycznej. Przy samym parku czeka bezpłatny parking dla naszych gości.</p>
+          </div>
+        </div>
+
+        <div class="location-map-wrap">
+          <div class="map-visual-card">
+            <div class="map-bg-pattern"></div>
+            <div class="map-marker-pin">
+              <div class="pin-pulse"></div>
+              <div class="pin-icon"><i class="fa-solid fa-water"></i></div>
+              <div class="pin-tooltip">
+                <strong>Wake & Roll Park</strong>
+                <span>Stawy Stefańskiego, Łódź</span>
+              </div>
+            </div>
+            <div class="map-overlay-info">
+              <span class="map-badge"><i class="fa-solid fa-location-arrow"></i> Nawigacja jednym kliknięciem:</span>
+              <a href="https://maps.google.com/?q=Wake+and+Roll+Park+Stawy+Stefanskiego+Lodz" target="_blank" rel="noopener" class="btn btn-primary btn-block">
+                <i class="fa-solid fa-diamond-turn-right"></i> Otwórz w Google Maps
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-col brand-col">
+        <div class="brand-logo footer-logo">
+          <div class="logo-mark"><i class="fa-solid fa-water"></i></div>
+          <div class="logo-text">
+            <span class="logo-title">WAKE & ROLL</span>
+            <span class="logo-subtitle">PARK ŁÓDŹ</span>
+          </div>
+        </div>
+        <p class="footer-about">
+          Twój letni azyl na Stawach Stefańskiego. Wyciąg Sesitec 2.0, nauka wakeboardingu, deski SUP, 
+          WakeWakacje i strefa Beach Bar z muzyką na żywo.
+        </p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/wakeandrollpark/" target="_blank" rel="noopener" class="social-circle" title="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="https://www.facebook.com/WakeAndRollParkLodz/" target="_blank" rel="noopener" class="social-circle" title="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="https://wakewakacje.pl" target="_blank" rel="noopener" class="social-circle" title="WakeWakacje">
+            <i class="fa-solid fa-globe"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Strefy Parku</h4>
+        <ul class="footer-links">
+          <li><a href="#momenty">Filozofia Łap Chwilę</a></li>
+          <li><a href="#simulator">Symulator Skoku</a></li>
+          <li><a href="#stories">Relacje Instagram</a></li>
+          <li><a href="#wakewakacje">Zajęcia Wakeboardowe (Dzieci)</a></li>
+          <li><a href="#beachbar">Beach Bar & Eventy</a></li>
+          <li><a href="#cennik">Cennik i Pakiety</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Inicjatywy</h4>
+        <ul class="footer-links">
+          <li><a href="https://wakewakacje.pl" target="_blank" rel="noopener">WakeWakacje.pl (Dzieci)</a></li>
+          <li><a href="#beachbar">Coffee Rave „Wstań i Tańcz”</a></li>
+          <li><a href="#pane-grupy">Kawalerskie & Panieńskie</a></li>
+          <li><a href="#pane-grupy">Team Building dla Firm</a></li>
+          <li><a href="#lokalizacja">Dojazd i Parking</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Dołącz do Ekipy</h4>
+        <p class="newsletter-desc">Obserwuj nasze codzienne relacje i sprawdzaj warunki na żywo!</p>
+        <div class="social-badges-footer">
+          <a href="https://www.instagram.com/wakeandrollpark/" target="_blank" rel="noopener" class="ig-follow-pill">
+            <i class="fa-brands fa-instagram"></i> @wakeandrollpark
+          </a>
+          <a href="https://www.facebook.com/WakeAndRollParkLodz/" target="_blank" rel="noopener" class="fb-follow-pill">
+            <i class="fa-brands fa-facebook"></i> /WakeAndRollParkLodz
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>&copy; 2026 Wake & Roll Park Łódź. Łap chwilę na wodzie.</p>
+        <p class="cloudflare-note">
+          <i class="fa-solid fa-cloud text-info"></i> Skierowano przez sieć <strong>Cloudflare</strong> (Pages / SSL / Edge CDN).
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
